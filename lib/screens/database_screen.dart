@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:madplan_app/screens/screen_constants.dart';
+
+import 'screens.dart';
 
 class DatabaseScreen extends StatelessWidget {
   const DatabaseScreen({Key? key}) : super(key: key);

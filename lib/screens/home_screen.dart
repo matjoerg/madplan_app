@@ -1,20 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:madplan_app/screens/database_screen.dart';
-import 'package:madplan_app/screens/planner_screen.dart';
-import 'package:madplan_app/screens/screen_constants.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import 'list_screen.dart';
+import 'screens.dart';
 
-class BaseScreen extends StatefulWidget {
-  const BaseScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _BaseScreenState createState() => _BaseScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _BaseScreenState extends State<BaseScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   int currentTabIndex = 0;
   late CupertinoTabView returnValue;
   final CupertinoTabController _controller = CupertinoTabController();
@@ -25,9 +22,7 @@ class _BaseScreenState extends State<BaseScreen> {
       showCupertinoModalBottomSheet(
         context: context,
         useRootNavigator: true,
-        builder: (context) => CupertinoPageScaffold(
-          child: PlannerScreen(),
-        ),
+        builder: (context) => PlannerScreen(),
       );
     } else {
       currentTabIndex = index;
