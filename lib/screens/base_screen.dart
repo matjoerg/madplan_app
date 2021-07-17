@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:madplan_app/screens/database_screen.dart';
 import 'package:madplan_app/screens/planner_screen.dart';
 import 'package:madplan_app/screens/screen_constants.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'list_screen.dart';
 
@@ -14,12 +15,23 @@ class BaseScreen extends StatefulWidget {
 }
 
 class _BaseScreenState extends State<BaseScreen> {
-  int _selectedIndex = 0;
+  int currentTabIndex = 0;
+  late CupertinoTabView returnValue;
+  final CupertinoTabController _controller = CupertinoTabController();
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index == 1) {
+      _controller.index = currentTabIndex;
+      showCupertinoModalBottomSheet(
+        context: context,
+        useRootNavigator: true,
+        builder: (context) => CupertinoPageScaffold(
+          child: PlannerScreen(),
+        ),
+      );
+    } else {
+      currentTabIndex = index;
+    }
   }
 
   @override
@@ -40,10 +52,11 @@ class _BaseScreenState extends State<BaseScreen> {
             label: ScreenConstants.database.title,
           ),
         ],
-        currentIndex: _selectedIndex,
+        currentIndex: currentTabIndex,
+        onTap: _onItemTapped,
       ),
+      controller: _controller,
       tabBuilder: (BuildContext context, int index) {
-        late final CupertinoTabView returnValue;
         switch (index) {
           case 0:
             returnValue = CupertinoTabView(builder: (context) {
@@ -53,11 +66,6 @@ class _BaseScreenState extends State<BaseScreen> {
             });
             break;
           case 1:
-            returnValue = CupertinoTabView(builder: (context) {
-              return CupertinoPageScaffold(
-                child: PlannerScreen(),
-              );
-            });
             break;
           case 2:
             returnValue = CupertinoTabView(builder: (context) {

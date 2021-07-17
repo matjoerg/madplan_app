@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:madplan_app/screens/screen_constants.dart';
 
 class ListScreen extends StatelessWidget {
   const ListScreen({Key? key}) : super(key: key);
@@ -8,7 +9,7 @@ class ListScreen extends StatelessWidget {
     return CustomScrollView(
       slivers: <Widget>[
         CupertinoSliverNavigationBar(
-          largeTitle: Text('Shopping Cart'),
+          largeTitle: Text(ScreenConstants.list.title),
         ),
       ],
     );
