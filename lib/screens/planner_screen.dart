@@ -11,34 +11,61 @@ class PlannerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
+        leading: TextButton(
+          child: Text('Annuller'),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        trailing: TextButton(
+          child: Text('Opret'),
+          onPressed: () {},
+        ),
         middle: Text(ScreenConstants.planner.title),
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              color: Colors.transparent,
-              height: 50,
+      child: Material(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                Container(
+                  color: Colors.transparent,
+                  height: 50,
+                ),
+                buildDropDown('Mandag'),
+                SizedBox(height: 10),
+                buildDropDown('Tirsdag'),
+                SizedBox(height: 10),
+                buildDropDown('Onsdag'),
+                SizedBox(height: 10),
+                buildDropDown('Torsdag'),
+                SizedBox(height: 10),
+                buildDropDown('Fredag'),
+                SizedBox(height: 10),
+                buildDropDown('Lørdag'),
+                SizedBox(height: 10),
+                buildDropDown('Søndag'),
+                Container(
+                  color: Colors.transparent,
+                  height: 500,
+                ),
+              ],
             ),
-            Material(
-              child: DropdownSearch<String>(
-                  mode: Mode.MENU,
-                  showSearchBox: true,
-                  showClearButton: true,
-                  showSelectedItem: true,
-                  items: ["Brazil", "Italia", "Tunisia", 'Canada'],
-                  label: "Mandag",
-                  hint: "country in menu mode",
-                  onChanged: print,
-                  selectedItem: "Brazil"),
-            ),
-            Container(
-              color: Colors.transparent,
-              height: 500,
-            ),
-          ],
+          ),
         ),
       ),
+    );
+  }
+
+  buildDropDown(String title) {
+    return DropdownSearch<String>(
+      mode: Mode.MENU,
+      showSearchBox: true,
+      showClearButton: true,
+      showSelectedItem: true,
+      items: ["Brazil", "Italia", "Tunisia", 'Canada'],
+      label: title,
+      hint: "Vælg en ret",
+      onChanged: print,
     );
   }
 }
