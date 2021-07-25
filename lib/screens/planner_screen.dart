@@ -31,19 +31,19 @@ class PlannerScreen extends StatelessWidget {
                   color: Colors.transparent,
                   height: 50,
                 ),
-                buildDropDown('Mandag'),
+                _buildDropDown('Mandag'),
                 SizedBox(height: 10),
-                buildDropDown('Tirsdag'),
+                _buildDropDown('Tirsdag'),
                 SizedBox(height: 10),
-                buildDropDown('Onsdag'),
+                _buildDropDown('Onsdag'),
                 SizedBox(height: 10),
-                buildDropDown('Torsdag'),
+                _buildDropDown('Torsdag'),
                 SizedBox(height: 10),
-                buildDropDown('Fredag'),
+                _buildDropDown('Fredag'),
                 SizedBox(height: 10),
-                buildDropDown('Lørdag'),
+                _buildDropDown('Lørdag'),
                 SizedBox(height: 10),
-                buildDropDown('Søndag'),
+                _buildDropDown('Søndag'),
                 Container(
                   color: Colors.transparent,
                   height: 500,
@@ -56,9 +56,9 @@ class PlannerScreen extends StatelessWidget {
     );
   }
 
-  buildDropDown(String title) {
+  _buildDropDown(String title) {
     return DropdownSearch<String>(
-      mode: Mode.MENU,
+      mode: Mode.DIALOG,
       showSearchBox: true,
       showClearButton: true,
       showSelectedItem: true,
