@@ -12,20 +12,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int currentTabIndex = 0;
-  late CupertinoTabView returnValue;
+  int _currentTabIndex = 0;
+  late CupertinoTabView _returnValue;
   final CupertinoTabController _controller = CupertinoTabController();
 
   void _onItemTapped(int index) {
     if (index == 1) {
-      _controller.index = currentTabIndex;
+      _controller.index = _currentTabIndex;
       showCupertinoModalBottomSheet(
         context: context,
         useRootNavigator: true,
         builder: (context) => PlannerScreen(),
       );
     } else {
-      currentTabIndex = index;
+      _currentTabIndex = index;
     }
   }
 
@@ -47,14 +47,14 @@ class _HomeScreenState extends State<HomeScreen> {
             label: ScreenConstants.database.title,
           ),
         ],
-        currentIndex: currentTabIndex,
+        currentIndex: _currentTabIndex,
         onTap: _onItemTapped,
       ),
       controller: _controller,
       tabBuilder: (BuildContext context, int index) {
         switch (index) {
           case 0:
-            returnValue = CupertinoTabView(builder: (context) {
+            _returnValue = CupertinoTabView(builder: (context) {
               return CupertinoPageScaffold(
                 child: ListScreen(),
               );
@@ -63,14 +63,14 @@ class _HomeScreenState extends State<HomeScreen> {
           case 1:
             break;
           case 2:
-            returnValue = CupertinoTabView(builder: (context) {
+            _returnValue = CupertinoTabView(builder: (context) {
               return CupertinoPageScaffold(
                 child: DatabaseScreen(),
               );
             });
             break;
         }
-        return returnValue;
+        return _returnValue;
       },
     );
   }
