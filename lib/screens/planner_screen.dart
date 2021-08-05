@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:madplan_app/constants/pixels.dart';
 
 import 'screens.dart';
 
@@ -24,26 +25,26 @@ class PlannerScreen extends StatelessWidget {
       child: Material(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(Pixels.defaultMargin),
             child: Column(
               children: [
                 Container(
                   color: Colors.transparent,
                   height: 50,
                 ),
-                _buildDropDown('Mandag'),
+                _buildDropdown('Mandag'),
                 SizedBox(height: 10),
-                _buildDropDown('Tirsdag'),
+                _buildDropdown('Tirsdag'),
                 SizedBox(height: 10),
-                _buildDropDown('Onsdag'),
+                _buildDropdown('Onsdag'),
                 SizedBox(height: 10),
-                _buildDropDown('Torsdag'),
+                _buildDropdown('Torsdag'),
                 SizedBox(height: 10),
-                _buildDropDown('Fredag'),
+                _buildDropdown('Fredag'),
                 SizedBox(height: 10),
-                _buildDropDown('Lørdag'),
+                _buildDropdown('Lørdag'),
                 SizedBox(height: 10),
-                _buildDropDown('Søndag'),
+                _buildDropdown('Søndag'),
                 Container(
                   color: Colors.transparent,
                   height: 500,
@@ -56,7 +57,7 @@ class PlannerScreen extends StatelessWidget {
     );
   }
 
-  _buildDropDown(String title) {
+  _buildDropdown(String title) {
     return DropdownSearch<String>(
       mode: Mode.DIALOG,
       showSearchBox: true,
