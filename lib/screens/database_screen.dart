@@ -14,6 +14,7 @@ class DatabaseScreen extends StatefulWidget {
 
 class _DatabaseScreenState extends State<DatabaseScreen> {
   String? chosenDishName;
+  int noOfIngredients = 0;
   bool _creatingNewDish = false;
   TextEditingController _newDishNameController = TextEditingController();
 
@@ -38,9 +39,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
           padding: EdgeInsets.all(Pixels.defaultMargin),
           sliver: SliverList(
             delegate: SliverChildListDelegate.fixed(
-              [
-                _buildIngredientDropdowns("1"),
-              ],
+              _buildIngredients(),
             ),
           ),
 
@@ -74,47 +73,69 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
     );
   }
 
-  _buildIngredientDropdowns(String title) {
+  List<Widget> _buildIngredients() {
+    List<Widget> ingredientsList = [];
+    for (int i = 0; i < noOfIngredients; i++) {
+      ingredientsList.add(_buildIngredientDropdowns("1"));
+    }
+    ingredientsList.add(_buildAddIngredientButton());
+    return ingredientsList;
+  }
+
+  Widget _buildAddIngredientButton() {
+    return CupertinoButton(
+        child: Icon(CupertinoIcons.add_circled_solid),
+        onPressed: () {
+          setState(() {
+            noOfIngredients++;
+          });
+        });
+  }
+
+  Widget _buildIngredientDropdowns(String title) {
     return Material(
-      child: Row(
-        children: [
-          Expanded(
-            child: DropdownSearch<String>(
-              mode: Mode.MENU,
-              showSearchBox: true,
-              showClearButton: false,
-              showSelectedItem: true,
-              items: ["Opret ny", "Italia", "Tunisia", 'Canada'],
-              label: "Vare " + title,
-              onChanged: _setDishName,
-              dropdownBuilder: _customIngredientDropdown,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: Row(
+          children: [
+            Expanded(
+              child: DropdownSearch<String>(
+                mode: Mode.MENU,
+                showSearchBox: true,
+                showClearButton: false,
+                showSelectedItem: true,
+                items: ["Opret ny", "Italia", "Tunisia", 'Canada'],
+                label: "Vare " + title,
+                onChanged: _setDishName,
+                dropdownBuilder: _customIngredientDropdown,
+              ),
             ),
-          ),
-          Expanded(
-            child: DropdownSearch<String>(
-              mode: Mode.MENU,
-              showSearchBox: false,
-              showClearButton: false,
-              showSelectedItem: true,
-              items: ["1", "2", "3", "4"],
-              label: "Antal",
-              onChanged: _setDishName,
-              dropdownBuilder: _customCountDropdown,
+            Expanded(
+              child: DropdownSearch<String>(
+                mode: Mode.MENU,
+                showSearchBox: false,
+                showClearButton: false,
+                showSelectedItem: true,
+                items: ["1", "2", "3", "4"],
+                label: "Antal",
+                onChanged: _setDishName,
+                dropdownBuilder: _customCountDropdown,
+              ),
             ),
-          ),
-          Expanded(
-            child: DropdownSearch<String>(
-              mode: Mode.MENU,
-              showSearchBox: true,
-              showClearButton: false,
-              showSelectedItem: true,
-              items: ["Opret ny", "Italia", "Tunisia", 'Canada'],
-              label: "Kategori",
-              onChanged: _setDishName,
-              dropdownBuilder: _customCategoryDropdown,
+            Expanded(
+              child: DropdownSearch<String>(
+                mode: Mode.MENU,
+                showSearchBox: true,
+                showClearButton: false,
+                showSelectedItem: true,
+                items: ["Opret ny", "Italia", "Tunisia", 'Canada'],
+                label: "Kategori",
+                onChanged: _setDishName,
+                dropdownBuilder: _customCategoryDropdown,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
