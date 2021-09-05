@@ -2,6 +2,8 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:madplan_app/constants/pixels.dart';
+import 'package:madplan_app/models/dish.dart';
+import 'package:madplan_app/models/item.dart';
 
 import 'screens.dart';
 
@@ -13,7 +15,7 @@ class DatabaseScreen extends StatefulWidget {
 }
 
 class _DatabaseScreenState extends State<DatabaseScreen> {
-  String? chosenDishName;
+  Dish? chosenDish;
   int noOfIngredients = 0;
   bool _creatingNewDish = false;
   TextEditingController _newDishNameController = TextEditingController();
@@ -42,17 +44,16 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
               _buildIngredients(),
             ),
           ),
-
-          /*SliverGrid.count(
-            crossAxisCount: 3,
-            childAspectRatio: 1.2,
-            children: [
-              _buildDropDown("Valgt ret 1"),
-              _buildDropDown("Valgt ret 2"),
-              _buildDropDown("Valgt ret 3"),
-              _buildDropDown("Valgt ret 4"),
-            ],
-          ),*/
+        ),
+        SliverPadding(
+          padding: EdgeInsets.all(Pixels.defaultMargin),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate.fixed(
+              [
+                _buildAddButtons(),
+              ],
+            ),
+          ),
         ),
       ],
     );
@@ -63,7 +64,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
       child: DropdownSearch<String>(
         mode: Mode.MENU,
         showSearchBox: true,
-        showClearButton: true,
+        showClearButton: false,
         showSelectedItem: true,
         items: ["Opret ny", "Italia", "Tunisia", 'Canada'],
         label: title,
@@ -75,38 +76,60 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
 
   List<Widget> _buildIngredients() {
     List<Widget> ingredientsList = [];
-    for (int i = 0; i < noOfIngredients; i++) {
-      ingredientsList.add(_buildIngredientDropdowns("1"));
+    if (chosenDish == null) {
+      return ingredientsList;
     }
-    ingredientsList.add(_buildAddIngredientButton());
+    noOfIngredients = chosenDish!.ingredients.length;
+    for (int i = 0; i < noOfIngredients; i++) {
+      ingredientsList.add(_buildIngredientDropdowns(i.toString(), i));
+    }
     return ingredientsList;
   }
 
-  Widget _buildAddIngredientButton() {
-    return CupertinoButton(
-        child: Icon(CupertinoIcons.add_circled_solid),
-        onPressed: () {
-          setState(() {
-            noOfIngredients++;
-          });
-        });
+  Widget _buildAddButtons() {
+    return Row(
+      children: [
+        if (chosenDish != null)
+          CupertinoButton(
+            child: Icon(CupertinoIcons.add_circled_solid),
+            onPressed: () {
+              setState(
+                () {
+                  chosenDish?.ingredients.add(Item(name: "Added"));
+                },
+              );
+            },
+          ),
+        TextButton(
+          child: Text("Ny vare"),
+          onPressed: () => {},
+        ),
+        TextButton(
+          child: Text("Ny kategori"),
+          onPressed: () => {},
+        ),
+      ],
+    );
   }
 
-  Widget _buildIngredientDropdowns(String title) {
+  Widget _buildIngredientDropdowns(String title, int index) {
     return Material(
       child: Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: Row(
           children: [
             Expanded(
+              flex: 2,
               child: DropdownSearch<String>(
                 mode: Mode.MENU,
                 showSearchBox: true,
                 showClearButton: false,
                 showSelectedItem: true,
-                items: ["Opret ny", "Italia", "Tunisia", 'Canada'],
+                dropdownButtonBuilder: (_) => SizedBox(width: 8),
+                showAsSuffixIcons: false,
+                items: ["Italia", "Tunisia", 'Canada'],
                 label: "Vare " + title,
-                onChanged: _setDishName,
+                onChanged: _setIngredientName,
                 dropdownBuilder: _customIngredientDropdown,
               ),
             ),
@@ -116,28 +139,44 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
                 showSearchBox: false,
                 showClearButton: false,
                 showSelectedItem: true,
-                items: ["1", "2", "3", "4"],
+                dropdownButtonBuilder: (_) => SizedBox(width: 8),
+                showAsSuffixIcons: false,
+                items: ["1", "2", "3", "99"],
                 label: "Antal",
-                onChanged: _setDishName,
-                dropdownBuilder: _customCountDropdown,
+                onChanged: _setIngredientCount,
+                dropdownBuilder: _customIngredientDropdown,
               ),
             ),
             Expanded(
+              flex: 2,
               child: DropdownSearch<String>(
                 mode: Mode.MENU,
                 showSearchBox: true,
                 showClearButton: false,
                 showSelectedItem: true,
-                items: ["Opret ny", "Italia", "Tunisia", 'Canada'],
+                dropdownButtonBuilder: (_) => SizedBox(width: 8),
+                showAsSuffixIcons: false,
+                items: ["Italia", "Tunisia", 'Canada'],
                 label: "Kategori",
-                onChanged: _setDishName,
-                dropdownBuilder: _customCategoryDropdown,
+                onChanged: _setIngredientCategory,
+                dropdownBuilder: _customIngredientDropdown,
               ),
             ),
+            _buildRemoveIngredientButton(index),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildRemoveIngredientButton(int index) {
+    return CupertinoButton(
+        child: Icon(CupertinoIcons.clear_circled_solid),
+        onPressed: () {
+          setState(() {
+            chosenDish?.ingredients.removeAt(index);
+          });
+        });
   }
 
   Widget _customDishDropdown(BuildContext context, String? selectedItem, String? notUsed) {
@@ -160,32 +199,6 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
   }
 
   Widget _customIngredientDropdown(BuildContext context, String? selectedItem, String? notUsed) {
-    if (selectedItem == "Opret ny") {
-      return CupertinoTextField(
-        placeholder: "Navn på ny vare",
-      );
-    }
-    if (selectedItem == null) {
-      return Container();
-    }
-
-    return Text(selectedItem);
-  }
-
-  Widget _customCountDropdown(BuildContext context, String? selectedItem, String? notUsed) {
-    if (selectedItem == null) {
-      return Container();
-    }
-
-    return Text(selectedItem);
-  }
-
-  Widget _customCategoryDropdown(BuildContext context, String? selectedItem, String? notUsed) {
-    if (selectedItem == "Opret ny") {
-      return CupertinoTextField(
-        placeholder: "Navn på ny kategori",
-      );
-    }
     if (selectedItem == null) {
       return Container();
     }
@@ -196,14 +209,56 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
   _setDishName(dynamic selectedItem) {
     if (selectedItem == null) {
       _creatingNewDish = false;
-      chosenDishName = null;
+      setState(() {
+        chosenDish = null;
+      });
       return;
     }
     if (selectedItem == "Opret ny") {
       _creatingNewDish = true;
     } else {
       _creatingNewDish = false;
-      chosenDishName = selectedItem;
+      setState(() {
+        chosenDish = getDish(selectedItem);
+      });
+      print(selectedItem);
+    }
+  }
+
+  Dish getDish(String dishName) {
+    return Dish(
+      name: dishName,
+      ingredients: [
+        Item(name: "Kartofler"),
+        Item(name: "Broccoli"),
+      ],
+    );
+  }
+
+  _setIngredientName(dynamic selectedItem) {
+    if (selectedItem == null) {
+      return;
+    }
+    if (selectedItem == "Opret ny") {
+    } else {
+      print(selectedItem);
+    }
+  }
+
+  _setIngredientCount(dynamic selectedItem) {
+    if (selectedItem == null) {
+      return;
+    } else {
+      print(selectedItem);
+    }
+  }
+
+  _setIngredientCategory(dynamic selectedItem) {
+    if (selectedItem == null) {
+      return;
+    }
+    if (selectedItem == "Opret ny") {
+    } else {
       print(selectedItem);
     }
   }

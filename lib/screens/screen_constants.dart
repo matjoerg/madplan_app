@@ -1,7 +1,7 @@
 class ScreenConstants {
   static ScreenModel planner = ScreenModel('Ny madplan', '/planner');
   static ScreenModel list = ScreenModel('Indkøbsliste', '/list');
-  static ScreenModel database = ScreenModel('Retter', '/database');
+  static ScreenModel database = ScreenModel('Mine retter', '/database');
 }
 
 class ScreenModel {
