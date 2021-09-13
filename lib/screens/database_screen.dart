@@ -79,10 +79,11 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
     if (chosenDish == null) {
       return ingredientsList;
     }
-    noOfIngredients = chosenDish!.ingredients.length;
-    for (int i = 0; i < noOfIngredients; i++) {
-      ingredientsList.add(_buildIngredientDropdowns(i.toString(), i));
-    }
+    int index = 0;
+    chosenDish!.ingredients.forEach((ingredient) {
+      ingredientsList.add(_buildIngredientDropdowns(ingredient, index));
+      index++;
+    });
     return ingredientsList;
   }
 
@@ -95,7 +96,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
             onPressed: () {
               setState(
                 () {
-                  chosenDish?.ingredients.add(Item(name: "Added"));
+                  chosenDish?.ingredients.add(Item(name: "Empty", category: "Empty"));
                 },
               );
             },
@@ -112,7 +113,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
     );
   }
 
-  Widget _buildIngredientDropdowns(String title, int index) {
+  Widget _buildIngredientDropdowns(Item ingredient, int index) {
     return Material(
       child: Padding(
         padding: const EdgeInsets.only(bottom: 10),
@@ -128,7 +129,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
                 dropdownButtonBuilder: (_) => SizedBox(width: 8),
                 showAsSuffixIcons: false,
                 items: ["Italia", "Tunisia", 'Canada'],
-                label: "Vare " + title,
+                label: "Vare " + index.toString(),
                 onChanged: _setIngredientName,
                 dropdownBuilder: _customIngredientDropdown,
               ),
@@ -229,8 +230,8 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
     return Dish(
       name: dishName,
       ingredients: [
-        Item(name: "Kartofler"),
-        Item(name: "Broccoli"),
+        Item(name: "Kartofler", category: "Frugt og grønt"),
+        Item(name: "Mel", category: "Kolonial"),
       ],
     );
   }
