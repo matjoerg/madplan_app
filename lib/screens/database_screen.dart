@@ -2,8 +2,8 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:madplan_app/constants/pixels.dart';
-import 'package:madplan_app/models/dish.dart';
-import 'package:madplan_app/models/item.dart';
+import 'package:madplan_app/models/dropdown_ingredient.dart';
+import 'package:madplan_app/models/models.dart';
 
 import 'screens.dart';
 
@@ -66,7 +66,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
         showSearchBox: true,
         showClearButton: false,
         showSelectedItem: true,
-        items: ["Opret ny", "Italia", "Tunisia", 'Canada'],
+        items: ["Opret ny", "Ret", "Retteret", 'Ret med ret'],
         label: title,
         onChanged: _setDishName,
         dropdownBuilder: _customDishDropdown,
@@ -81,7 +81,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
     }
     int index = 0;
     chosenDish!.ingredients.forEach((ingredient) {
-      ingredientsList.add(_buildIngredientDropdowns(ingredient, index));
+      ingredientsList.add(_buildIngredientDropdownRow(ingredient, index));
       index++;
     });
     return ingredientsList;
@@ -96,7 +96,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
             onPressed: () {
               setState(
                 () {
-                  chosenDish?.ingredients.add(Item(name: "Empty", category: "Empty"));
+                  chosenDish?.ingredients.add(Item(name: "", category: "", count: 0));
                 },
               );
             },
@@ -113,7 +113,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
     );
   }
 
-  Widget _buildIngredientDropdowns(Item ingredient, int index) {
+  Widget _buildIngredientDropdownRow(Item ingredient, int index) {
     return Material(
       child: Padding(
         padding: const EdgeInsets.only(bottom: 10),
@@ -121,28 +121,47 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
           children: [
             Expanded(
               flex: 2,
-              child: DropdownSearch<String>(
+              child: DropdownSearch<IndexedIngredientProperty>(
                 mode: Mode.MENU,
                 showSearchBox: true,
                 showClearButton: false,
                 showSelectedItem: true,
                 dropdownButtonBuilder: (_) => SizedBox(width: 8),
                 showAsSuffixIcons: false,
-                items: ["Italia", "Tunisia", 'Canada'],
-                label: "Vare " + index.toString(),
+                items: [
+                  IndexedIngredientProperty(property: "Kartofler", index: index),
+                  IndexedIngredientProperty(property: "Broccoli", index: index),
+                  IndexedIngredientProperty(property: "Rød peber", index: index),
+                ],
+                itemAsString: (IndexedIngredientProperty item) => item.property,
+                compareFn: _compareIngredientProperties,
+                selectedItem: ingredient.name.isNotEmpty
+                    ? IndexedIngredientProperty(property: ingredient.name, index: index)
+                    : null,
+                label: "Vare " + (index + 1).toString(),
                 onChanged: _setIngredientName,
                 dropdownBuilder: _customIngredientDropdown,
               ),
             ),
             Expanded(
-              child: DropdownSearch<String>(
+              child: DropdownSearch<IndexedIngredientProperty>(
                 mode: Mode.MENU,
                 showSearchBox: false,
                 showClearButton: false,
                 showSelectedItem: true,
                 dropdownButtonBuilder: (_) => SizedBox(width: 8),
                 showAsSuffixIcons: false,
-                items: ["1", "2", "3", "99"],
+                items: [
+                  IndexedIngredientProperty(property: "1", index: index),
+                  IndexedIngredientProperty(property: "21", index: index),
+                  IndexedIngredientProperty(property: "91", index: index),
+                  IndexedIngredientProperty(property: "99", index: index),
+                ],
+                itemAsString: (IndexedIngredientProperty item) => item.property,
+                compareFn: _compareIngredientProperties,
+                selectedItem: ingredient.count != 0
+                    ? IndexedIngredientProperty(property: ingredient.count.toString(), index: index)
+                    : null,
                 label: "Antal",
                 onChanged: _setIngredientCount,
                 dropdownBuilder: _customIngredientDropdown,
@@ -150,14 +169,23 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
             ),
             Expanded(
               flex: 2,
-              child: DropdownSearch<String>(
+              child: DropdownSearch<IndexedIngredientProperty>(
                 mode: Mode.MENU,
                 showSearchBox: true,
                 showClearButton: false,
                 showSelectedItem: true,
                 dropdownButtonBuilder: (_) => SizedBox(width: 8),
                 showAsSuffixIcons: false,
-                items: ["Italia", "Tunisia", 'Canada'],
+                items: [
+                  IndexedIngredientProperty(property: "Frugt og grønt", index: index),
+                  IndexedIngredientProperty(property: "Kolonial", index: index),
+                  IndexedIngredientProperty(property: "Frost", index: index),
+                ],
+                itemAsString: (IndexedIngredientProperty item) => item.property,
+                compareFn: _compareIngredientProperties,
+                selectedItem: ingredient.category.isNotEmpty
+                    ? IndexedIngredientProperty(property: ingredient.category, index: index)
+                    : null,
                 label: "Kategori",
                 onChanged: _setIngredientCategory,
                 dropdownBuilder: _customIngredientDropdown,
@@ -168,6 +196,13 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
         ),
       ),
     );
+  }
+
+  bool _compareIngredientProperties(IndexedIngredientProperty? item, IndexedIngredientProperty? selectedItem) {
+    if (item == null || selectedItem == null) {
+      return false;
+    }
+    return item.property == selectedItem.property;
   }
 
   Widget _buildRemoveIngredientButton(int index) {
@@ -199,12 +234,12 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
     return Text(selectedItem);
   }
 
-  Widget _customIngredientDropdown(BuildContext context, String? selectedItem, String? notUsed) {
+  Widget _customIngredientDropdown(BuildContext context, IndexedIngredientProperty? selectedItem, String? notUsed) {
     if (selectedItem == null) {
       return Container();
     }
 
-    return Text(selectedItem);
+    return Text(selectedItem.property);
   }
 
   _setDishName(dynamic selectedItem) {
@@ -236,31 +271,27 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
     );
   }
 
-  _setIngredientName(dynamic selectedItem) {
+  _setIngredientName(IndexedIngredientProperty? selectedItem) {
     if (selectedItem == null) {
       return;
     }
-    if (selectedItem == "Opret ny") {
-    } else {
-      print(selectedItem);
-    }
+    chosenDish!.ingredients[selectedItem.index].name = selectedItem.property;
+    print(selectedItem.property);
   }
 
-  _setIngredientCount(dynamic selectedItem) {
+  _setIngredientCount(IndexedIngredientProperty? selectedItem) {
     if (selectedItem == null) {
       return;
-    } else {
-      print(selectedItem);
     }
+    chosenDish!.ingredients[selectedItem.index].count = int.parse(selectedItem.property);
+    print(selectedItem.property);
   }
 
-  _setIngredientCategory(dynamic selectedItem) {
+  _setIngredientCategory(IndexedIngredientProperty? selectedItem) {
     if (selectedItem == null) {
       return;
     }
-    if (selectedItem == "Opret ny") {
-    } else {
-      print(selectedItem);
-    }
+    chosenDish!.ingredients[selectedItem.index].category = selectedItem.property;
+    print(selectedItem.property);
   }
 }
