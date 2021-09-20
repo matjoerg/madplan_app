@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:madplan_app/components/search_decoration.dart';
 import 'package:madplan_app/constants/pixels.dart';
 
 import 'screens.dart';
@@ -61,6 +62,7 @@ class PlannerScreen extends StatelessWidget {
     return DropdownSearch<String>(
       mode: Mode.DIALOG,
       showSearchBox: true,
+      searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
       showClearButton: true,
       showSelectedItem: true,
       items: ["Brazil", "Italia", "Tunisia", 'Canada'],

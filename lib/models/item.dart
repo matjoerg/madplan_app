@@ -1,9 +1,9 @@
 class Item {
   String name;
-  int count;
+  double count;
   String category;
 
-  Item({required this.name, required this.category, this.count = 1});
+  Item({required this.name, required this.category, this.count = 1.0});
 
   factory Item.fromMap(Map<String, dynamic> map) {
     return Item(

@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:madplan_app/components/search_decoration.dart';
 import 'package:madplan_app/constants/pixels.dart';
 import 'package:madplan_app/models/dropdown_ingredient.dart';
 import 'package:madplan_app/models/models.dart';
@@ -76,6 +77,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
       child: DropdownSearch<String>(
         mode: Mode.MENU,
         showSearchBox: true,
+        searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
         showClearButton: false,
         showSelectedItem: true,
         items: ["Opret ny", "Ret", "Retteret", 'Ret med ret'],
@@ -100,15 +102,18 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
   }
 
   Widget _buildAddIngredientButton() {
-    return CupertinoButton(
-      child: Icon(CupertinoIcons.add_circled_solid),
-      onPressed: () {
-        setState(
-          () {
-            chosenDish?.ingredients.add(Item(name: "", category: "", count: 0));
-          },
-        );
-      },
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 150),
+      child: CupertinoButton(
+        child: Icon(CupertinoIcons.add_circled_solid),
+        onPressed: () {
+          setState(
+            () {
+              chosenDish?.ingredients.add(Item(name: "", category: "", count: 0));
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -152,6 +157,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 15),
                 child: CupertinoTextField(
+                  autofocus: true,
                   onChanged: (String? ingredientName) {
                     if (ingredientName != null) {
                       newIngredient.name = ingredientName;
@@ -166,6 +172,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
                   showClearButton: false,
                   showSelectedItem: true,
                   showAsSuffixIcons: false,
+                  searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
                   items: [
                     "Frugt og grønt",
                     "Kolonial",
@@ -187,7 +194,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
             CupertinoDialogAction(
               child: Text("Gem"),
               onPressed: () {
-                // TODO: Save ingredient to database
+                //TODO: Save ingredient to database
                 Navigator.pop(context);
               },
             ),
@@ -203,7 +210,44 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
     );
   }
 
-  _addNewCategory() {}
+  _addNewCategory() {
+    Item newIngredient = Item(name: "", category: "");
+    return showCupertinoDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: Text("Ny kategori"),
+          content: Padding(
+            padding: EdgeInsets.only(top: 15),
+            child: CupertinoTextField(
+              autofocus: true,
+              onChanged: (String? ingredientName) {
+                if (ingredientName != null) {
+                  newIngredient.name = ingredientName;
+                }
+              },
+              placeholder: "Navn på kategori",
+            ),
+          ),
+          actions: [
+            CupertinoDialogAction(
+              child: Text("Gem"),
+              onPressed: () {
+                //TODO: Save category to database
+                Navigator.pop(context);
+              },
+            ),
+            CupertinoDialogAction(
+                child: Text("Annuller"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                isDestructiveAction: true),
+          ],
+        );
+      },
+    );
+  }
 
   Widget _buildIngredientDropdownRow(Item ingredient, int index) {
     return Material(
@@ -216,6 +260,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
               child: DropdownSearch<IndexedIngredientProperty>(
                 mode: Mode.MENU,
                 showSearchBox: true,
+                searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
                 showClearButton: false,
                 showSelectedItem: true,
                 dropdownButtonBuilder: (_) => SizedBox(width: 8),
@@ -236,27 +281,21 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
               ),
             ),
             Expanded(
-              child: DropdownSearch<IndexedIngredientProperty>(
-                mode: Mode.MENU,
-                showSearchBox: false,
-                showClearButton: false,
-                showSelectedItem: true,
-                dropdownButtonBuilder: (_) => SizedBox(width: 8),
-                showAsSuffixIcons: false,
-                items: [
-                  IndexedIngredientProperty(property: "1", index: index),
-                  IndexedIngredientProperty(property: "21", index: index),
-                  IndexedIngredientProperty(property: "91", index: index),
-                  IndexedIngredientProperty(property: "99", index: index),
-                ],
-                itemAsString: (IndexedIngredientProperty item) => item.property,
-                compareFn: _compareIngredientProperties,
-                selectedItem: ingredient.count != 0
-                    ? IndexedIngredientProperty(property: ingredient.count.toString(), index: index)
-                    : null,
-                label: "Antal",
-                onChanged: _setIngredientCount,
-                dropdownBuilder: _customIngredientDropdown,
+              child: SizedBox(
+                height: 48,
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Antal",
+                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  onChanged: (String? selectedCount) {
+                    if (selectedCount == null) {
+                      return;
+                    }
+                    chosenDish!.ingredients[index].count = double.parse(selectedCount.replaceAll(",", "."));
+                  },
+                ),
               ),
             ),
             Expanded(
@@ -383,14 +422,6 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
       return;
     }
     chosenDish!.ingredients[selectedItem.index].name = selectedItem.property;
-    print(selectedItem.property);
-  }
-
-  _setIngredientCount(IndexedIngredientProperty? selectedItem) {
-    if (selectedItem == null) {
-      return;
-    }
-    chosenDish!.ingredients[selectedItem.index].count = int.parse(selectedItem.property);
     print(selectedItem.property);
   }
 
