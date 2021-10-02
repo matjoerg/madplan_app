@@ -17,7 +17,6 @@ class DatabaseScreen extends StatefulWidget {
 
 class _DatabaseScreenState extends State<DatabaseScreen> {
   Dish? chosenDish;
-  int noOfIngredients = 0;
 
   @override
   Widget build(BuildContext context) {
