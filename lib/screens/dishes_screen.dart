@@ -8,14 +8,14 @@ import 'package:madplan_app/models/models.dart';
 
 import 'screens.dart';
 
-class DatabaseScreen extends StatefulWidget {
-  const DatabaseScreen({Key? key}) : super(key: key);
+class DishesScreen extends StatefulWidget {
+  const DishesScreen({Key? key}) : super(key: key);
 
   @override
-  _DatabaseScreenState createState() => _DatabaseScreenState();
+  _DishesScreenState createState() => _DishesScreenState();
 }
 
-class _DatabaseScreenState extends State<DatabaseScreen> {
+class _DishesScreenState extends State<DishesScreen> {
   Dish? chosenDish;
 
   @override

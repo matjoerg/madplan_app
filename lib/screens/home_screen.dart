@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
           case 2:
             _returnValue = CupertinoTabView(builder: (context) {
               return CupertinoPageScaffold(
-                child: DatabaseScreen(),
+                child: DishesScreen(),
               );
             });
             break;
