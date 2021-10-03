@@ -3,19 +3,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:madplan_app/components/search_decoration.dart';
 import 'package:madplan_app/constants/pixels.dart';
-import 'package:madplan_app/models/dropdown_ingredient.dart';
+import 'package:madplan_app/models/indexed_ingredient_property.dart';
 import 'package:madplan_app/models/models.dart';
 
 import 'screens.dart';
 
-class DishesScreen extends StatefulWidget {
-  const DishesScreen({Key? key}) : super(key: key);
+class DishScreen extends StatefulWidget {
+  const DishScreen({Key? key}) : super(key: key);
 
   @override
-  _DishesScreenState createState() => _DishesScreenState();
+  _DishScreenState createState() => _DishScreenState();
 }
 
-class _DishesScreenState extends State<DishesScreen> {
+class _DishScreenState extends State<DishScreen> {
   Dish? chosenDish;
 
   @override
