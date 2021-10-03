@@ -78,7 +78,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
         showSearchBox: true,
         searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
         showClearButton: false,
-        showSelectedItem: true,
+        showSelectedItems: true,
         items: ["Opret ny", "Ret", "Retteret", 'Ret med ret'],
         label: title,
         onChanged: _setDishName,
@@ -169,7 +169,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
                 child: DropdownSearch<String>(
                   mode: Mode.MENU,
                   showClearButton: false,
-                  showSelectedItem: true,
+                  showSelectedItems: true,
                   showAsSuffixIcons: false,
                   searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
                   items: [
@@ -261,7 +261,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
                 showSearchBox: true,
                 searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
                 showClearButton: false,
-                showSelectedItem: true,
+                showSelectedItems: true,
                 dropdownButtonBuilder: (_) => SizedBox(width: 8),
                 showAsSuffixIcons: false,
                 items: [
@@ -269,7 +269,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
                   IndexedIngredientProperty(property: "Broccoli", index: index),
                   IndexedIngredientProperty(property: "Rød peber", index: index),
                 ],
-                itemAsString: (IndexedIngredientProperty item) => item.property,
+                itemAsString: (IndexedIngredientProperty? item) => item?.property ?? "",
                 compareFn: _compareIngredientProperties,
                 selectedItem: ingredient.name.isNotEmpty
                     ? IndexedIngredientProperty(property: ingredient.name, index: index)
@@ -302,7 +302,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
               child: DropdownSearch<IndexedIngredientProperty>(
                 mode: Mode.MENU,
                 showClearButton: false,
-                showSelectedItem: true,
+                showSelectedItems: true,
                 dropdownButtonBuilder: (_) => SizedBox(width: 8),
                 showAsSuffixIcons: false,
                 items: [
@@ -310,7 +310,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
                   IndexedIngredientProperty(property: "Kolonial", index: index),
                   IndexedIngredientProperty(property: "Frost", index: index),
                 ],
-                itemAsString: (IndexedIngredientProperty item) => item.property,
+                itemAsString: (IndexedIngredientProperty? item) => item?.property ?? "",
                 compareFn: _compareIngredientProperties,
                 selectedItem: ingredient.category.isNotEmpty
                     ? IndexedIngredientProperty(property: ingredient.category, index: index)
@@ -345,7 +345,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
         });
   }
 
-  Widget _customDishDropdown(BuildContext context, String? selectedItem, String? notUsed) {
+  Widget _customDishDropdown(BuildContext context, String? selectedItem) {
     if (selectedItem == "Opret ny") {
       return CupertinoTextField(
         placeholder: "Navn på ny ret",
@@ -362,7 +362,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
     return Text(selectedItem);
   }
 
-  Widget _customIngredientDropdown(BuildContext context, IndexedIngredientProperty? selectedItem, String? notUsed) {
+  Widget _customIngredientDropdown(BuildContext context, IndexedIngredientProperty? selectedItem) {
     if (selectedItem == null) {
       return Container();
     }
@@ -370,7 +370,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
     return Text(selectedItem.property);
   }
 
-  Widget _customNewIngredientDropdown(BuildContext context, String? selectedItem, String? notUsed) {
+  Widget _customNewIngredientDropdown(BuildContext context, String? selectedItem) {
     if (selectedItem == null) {
       return Container();
     }

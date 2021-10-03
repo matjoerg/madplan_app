@@ -64,7 +64,7 @@ class PlannerScreen extends StatelessWidget {
       showSearchBox: true,
       searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
       showClearButton: true,
-      showSelectedItem: true,
+      showSelectedItems: true,
       items: ["Brazil", "Italia", "Tunisia", 'Canada'],
       label: title,
       hint: "Vælg en ret",
