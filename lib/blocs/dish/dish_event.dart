@@ -16,24 +16,6 @@ class DishChosen extends DishEvent {
   List<Object> get props => [dishName];
 }
 
-class DishNewIngredientAdded extends DishEvent {
-  final Item ingredient;
-
-  const DishNewIngredientAdded({required this.ingredient});
-
-  @override
-  List<Object> get props => [ingredient];
-}
-
-class DishNewCategoryAdded extends DishEvent {
-  final String categoryName;
-
-  const DishNewCategoryAdded({required this.categoryName});
-
-  @override
-  List<Object> get props => [categoryName];
-}
-
 class DishSaved extends DishEvent {
   final Dish dish;
 
