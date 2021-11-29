@@ -77,10 +77,10 @@ class _DishScreenState extends State<DishScreen> {
         mode: Mode.MENU,
         showSearchBox: true,
         searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
+        dropdownSearchDecoration: InputDecoration(labelText: title),
         showClearButton: false,
         showSelectedItems: true,
-        items: ["Opret ny", "Ret", "Retteret", 'Ret med ret'],
-        label: title,
+        items: ["Opret ny", "Ret", "Retteret", "Ret med ret"],
         onChanged: _setDishName,
         dropdownBuilder: _customDishDropdown,
       ),
@@ -172,12 +172,12 @@ class _DishScreenState extends State<DishScreen> {
                   showSelectedItems: true,
                   showAsSuffixIcons: false,
                   searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
+                  dropdownSearchDecoration: InputDecoration(labelText: "Kategori"),
                   items: [
                     "Frugt og grønt",
                     "Kolonial",
                     "Frost",
                   ],
-                  label: "Kategori",
                   onChanged: (String? selectedItem) {
                     if (selectedItem == null) {
                       return;
@@ -260,6 +260,7 @@ class _DishScreenState extends State<DishScreen> {
                 mode: Mode.MENU,
                 showSearchBox: true,
                 searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
+                dropdownSearchDecoration: InputDecoration(labelText: "Vare " + (index + 1).toString()),
                 showClearButton: false,
                 showSelectedItems: true,
                 dropdownButtonBuilder: (_) => SizedBox(width: 8),
@@ -274,7 +275,6 @@ class _DishScreenState extends State<DishScreen> {
                 selectedItem: ingredient.name.isNotEmpty
                     ? IndexedIngredientProperty(property: ingredient.name, index: index)
                     : null,
-                label: "Vare " + (index + 1).toString(),
                 onChanged: _setIngredientName,
                 dropdownBuilder: _customIngredientDropdown,
               ),
@@ -315,7 +315,7 @@ class _DishScreenState extends State<DishScreen> {
                 selectedItem: ingredient.category.isNotEmpty
                     ? IndexedIngredientProperty(property: ingredient.category, index: index)
                     : null,
-                label: "Kategori",
+                dropdownSearchDecoration: InputDecoration(labelText: "Kategori"),
                 onChanged: _setIngredientCategory,
                 dropdownBuilder: _customIngredientDropdown,
               ),

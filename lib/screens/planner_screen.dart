@@ -3,11 +3,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:madplan_app/components/search_decoration.dart';
 import 'package:madplan_app/constants/pixels.dart';
+import 'package:madplan_app/constants/week_day.dart';
+import 'package:madplan_app/models/meal_plan.dart';
 
 import 'screens.dart';
 
-class PlannerScreen extends StatelessWidget {
+class PlannerScreen extends StatefulWidget {
   const PlannerScreen({Key? key}) : super(key: key);
+
+  @override
+  _PlannerScreenState createState() => _PlannerScreenState();
+}
+
+class _PlannerScreenState extends State<PlannerScreen> {
+  MealPlan mealPlan = MealPlan();
 
   @override
   Widget build(BuildContext context) {
@@ -33,19 +42,19 @@ class PlannerScreen extends StatelessWidget {
                   color: Colors.transparent,
                   height: 50,
                 ),
-                _buildDropdown('Mandag'),
+                _buildDropdown(Weekday.monday),
                 SizedBox(height: 10),
-                _buildDropdown('Tirsdag'),
+                _buildDropdown(Weekday.tuesday),
                 SizedBox(height: 10),
-                _buildDropdown('Onsdag'),
+                _buildDropdown(Weekday.wednesday),
                 SizedBox(height: 10),
-                _buildDropdown('Torsdag'),
+                _buildDropdown(Weekday.thursday),
                 SizedBox(height: 10),
-                _buildDropdown('Fredag'),
+                _buildDropdown(Weekday.friday),
                 SizedBox(height: 10),
-                _buildDropdown('Lørdag'),
+                _buildDropdown(Weekday.saturday),
                 SizedBox(height: 10),
-                _buildDropdown('Søndag'),
+                _buildDropdown(Weekday.sunday),
                 Container(
                   color: Colors.transparent,
                   height: 500,
@@ -58,17 +67,28 @@ class PlannerScreen extends StatelessWidget {
     );
   }
 
-  _buildDropdown(String title) {
+  _buildDropdown(String weekday) {
     return DropdownSearch<String>(
       mode: Mode.DIALOG,
       showSearchBox: true,
       searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
+      dropdownSearchDecoration: InputDecoration(labelText: weekday, hintText: "Vælg en ret"),
       showClearButton: true,
       showSelectedItems: true,
-      items: ["Brazil", "Italia", "Tunisia", 'Canada'],
-      label: title,
-      hint: "Vælg en ret",
-      onChanged: print,
+      items: ["Ret", "Retteret", "Ret med ret"],
+      onChanged: (selectedItem) {
+        _addMainDishToMealPlan(selectedItem, weekday);
+      },
     );
+  }
+
+  _addMainDishToMealPlan(dynamic selectedItem, String weekday) {
+    if (selectedItem == null) {
+      setState(() {
+        mealPlan.setMainDish(weekday, selectedItem);
+      });
+      return;
+    }
+    print(selectedItem);
   }
 }

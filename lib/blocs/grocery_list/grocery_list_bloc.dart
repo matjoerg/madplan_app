@@ -1,7 +1,6 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:madplan_app/models/meal_plan.dart';
 
 part 'grocery_list_event.dart';
 part 'grocery_list_state.dart';
