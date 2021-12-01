@@ -1,6 +1,8 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:madplan_app/blocs/grocery_list/grocery_list_bloc.dart';
 import 'package:madplan_app/components/search_decoration.dart';
 import 'package:madplan_app/constants/pixels.dart';
 import 'package:madplan_app/constants/week_day.dart';
@@ -28,7 +30,9 @@ class _PlannerScreenState extends State<PlannerScreen> {
         ),
         trailing: TextButton(
           child: Text('Opret'),
-          onPressed: () {},
+          onPressed: () {
+            BlocProvider.of<GroceryListBloc>(context).add(GroceryListCreated(mealPlan: MealPlan()));
+          },
         ),
         middle: Text(ScreenConstants.planner.title),
       ),
@@ -72,7 +76,9 @@ class _PlannerScreenState extends State<PlannerScreen> {
       mode: Mode.DIALOG,
       showSearchBox: true,
       searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
-      dropdownSearchDecoration: InputDecoration(labelText: weekday, hintText: "Vælg en ret"),
+      //dropdownSearchDecoration: InputDecoration(labelText: weekday, hintText: "Vælg en ret"),
+      label: weekday,
+      hint: "Vælg en ret",
       showClearButton: true,
       showSelectedItems: true,
       items: ["Ret", "Retteret", "Ret med ret"],

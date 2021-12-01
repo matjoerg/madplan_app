@@ -32,4 +32,12 @@ class MealPlan {
       meals[weekday]?.sideDishName = dishName;
     }
   }
+
+  Meal? get monday => meals[Weekday.monday];
+  Meal? get tuesday => meals[Weekday.tuesday];
+  Meal? get wednesday => meals[Weekday.wednesday];
+  Meal? get thursday => meals[Weekday.thursday];
+  Meal? get friday => meals[Weekday.friday];
+  Meal? get saturday => meals[Weekday.saturday];
+  Meal? get sunday => meals[Weekday.sunday];
 }

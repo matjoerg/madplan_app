@@ -12,3 +12,21 @@ class GroceryListCreated extends GroceryListEvent {
   @override
   List<Object> get props => [mealPlan];
 }
+
+class GroceryListItemAdded extends GroceryListEvent {
+  final Item item;
+
+  const GroceryListItemAdded({required this.item});
+
+  @override
+  List<Object> get props => [item];
+}
+
+class GroceryListItemRemoved extends GroceryListEvent {
+  final Item item;
+
+  const GroceryListItemRemoved({required this.item});
+
+  @override
+  List<Object> get props => [item];
+}

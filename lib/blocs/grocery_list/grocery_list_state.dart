@@ -7,4 +7,11 @@ abstract class GroceryListState extends Equatable {
   List<Object> get props => [];
 }
 
-class GroceryListInitial extends GroceryListState {}
+class GroceryListLoaded extends GroceryListState {
+  final GroceryList groceryList;
+
+  const GroceryListLoaded({required this.groceryList});
+
+  @override
+  List<Object> get props => [groceryList];
+}
