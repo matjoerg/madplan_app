@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:madplan_app/blocs/grocery_list/grocery_list_bloc.dart';
 import 'package:madplan_app/constants/pixels.dart';
+import 'package:madplan_app/models/item.dart';
 
 import 'screens.dart';
 
@@ -35,10 +36,31 @@ class ListScreen extends StatelessWidget {
   }
 
   List<Widget> _buildGroceryList(GroceryListLoaded state) {
-    List<Widget> categories = [];
+    List<Widget> categoryItemsList = [];
     state.groceryList.items.forEach((key, value) {
-      categories.add(Text(key));
+      categoryItemsList.add(_buildCategoryItemsList(key, value));
     });
-    return categories;
+    return categoryItemsList;
+  }
+
+  Widget _buildCategoryItemsList(String categoryName, List<Item> items) {
+    return Column(
+      children: [
+        Text(categoryName),
+        ..._buildItemsList(items),
+      ],
+    );
+  }
+
+  List<Widget> _buildItemsList(List<Item> items) {
+    List<Widget> itemTiles = [];
+    items.forEach((item) {
+      itemTiles.add(_buildItemTile(item));
+    });
+    return itemTiles;
+  }
+
+  Widget _buildItemTile(Item item) {
+    return Text(item.name);
   }
 }

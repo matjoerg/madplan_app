@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:madplan_app/services/service_locator.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'screens.dart';
@@ -14,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentTabIndex = 0;
   late CupertinoTabView _returnValue;
-  final CupertinoTabController _controller = CupertinoTabController();
+  final CupertinoTabController _controller = serviceLocator<CupertinoTabController>();
 
   void _onItemTapped(int index) {
     if (index == 1) {

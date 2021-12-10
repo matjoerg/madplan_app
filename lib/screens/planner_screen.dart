@@ -7,6 +7,7 @@ import 'package:madplan_app/components/search_decoration.dart';
 import 'package:madplan_app/constants/pixels.dart';
 import 'package:madplan_app/constants/week_day.dart';
 import 'package:madplan_app/models/meal_plan.dart';
+import 'package:madplan_app/services/service_locator.dart';
 
 import 'screens.dart';
 
@@ -32,6 +33,8 @@ class _PlannerScreenState extends State<PlannerScreen> {
           child: Text('Opret'),
           onPressed: () {
             BlocProvider.of<GroceryListBloc>(context).add(GroceryListCreated(mealPlan: MealPlan()));
+            Navigator.of(context).pop();
+            serviceLocator<CupertinoTabController>().index = 0;
           },
         ),
         middle: Text(ScreenConstants.planner.title),
