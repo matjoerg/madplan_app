@@ -40,6 +40,7 @@ class _PlannerScreenState extends State<PlannerScreen> {
         middle: Text(ScreenConstants.planner.title),
       ),
       child: Material(
+        color: Colors.white,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(Pixels.defaultMargin),

@@ -72,6 +72,7 @@ class _DishScreenState extends State<DishScreen> {
 
   _buildDishDropdown(String title) {
     return Material(
+      color: Colors.white,
       child: DropdownSearch<String>(
         mode: Mode.MENU,
         showSearchBox: true,
@@ -166,6 +167,7 @@ class _DishScreenState extends State<DishScreen> {
                 ),
               ),
               Material(
+                color: Colors.white,
                 child: DropdownSearch<String>(
                   mode: Mode.MENU,
                   showClearButton: false,
@@ -251,6 +253,7 @@ class _DishScreenState extends State<DishScreen> {
 
   Widget _buildIngredientDropdownRow(Item ingredient, int index) {
     return Material(
+      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: Row(
