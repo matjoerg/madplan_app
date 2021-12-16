@@ -7,6 +7,8 @@ class Weekday {
   static const String saturday = "Lørdag";
   static const String sunday = "Søndag";
 
+  static const List<String> all = [monday, tuesday, wednesday, thursday, friday, saturday, sunday];
+
   static String today = dateTimeDayToString(DateTime.now().day);
 }
 

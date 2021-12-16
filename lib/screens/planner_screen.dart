@@ -42,37 +42,35 @@ class _PlannerScreenState extends State<PlannerScreen> {
       child: Material(
         color: Colors.white,
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(Pixels.defaultMargin),
-            child: Column(
-              children: [
-                Container(
-                  color: Colors.transparent,
-                  height: 50,
-                ),
-                _buildDropdown(Weekday.monday),
-                SizedBox(height: 10),
-                _buildDropdown(Weekday.tuesday),
-                SizedBox(height: 10),
-                _buildDropdown(Weekday.wednesday),
-                SizedBox(height: 10),
-                _buildDropdown(Weekday.thursday),
-                SizedBox(height: 10),
-                _buildDropdown(Weekday.friday),
-                SizedBox(height: 10),
-                _buildDropdown(Weekday.saturday),
-                SizedBox(height: 10),
-                _buildDropdown(Weekday.sunday),
-                Container(
-                  color: Colors.transparent,
-                  height: 500,
-                ),
-              ],
+          child: SafeArea(
+            top: false,
+            child: Padding(
+              padding: const EdgeInsets.all(Pixels.defaultMargin),
+              child: Column(
+                children: [
+                  Container(
+                    color: Colors.transparent,
+                    height: 50,
+                  ),
+                  ..._buildWeekdayDropdowns(),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  List<Widget> _buildWeekdayDropdowns() {
+    List<Widget> weekdayDropdowns = [];
+    for (var weekday in Weekday.all) {
+      weekdayDropdowns.add(_buildDropdown(weekday));
+      if (weekday != Weekday.sunday) {
+        weekdayDropdowns.add(SizedBox(height: 10));
+      }
+    }
+    return weekdayDropdowns;
   }
 
   _buildDropdown(String weekday) {

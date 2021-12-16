@@ -24,46 +24,25 @@ class _DishScreenState extends State<DishScreen> {
         CupertinoSliverNavigationBar(
           largeTitle: Text(ScreenConstants.database.title),
         ),
-        SliverPadding(
-          padding: EdgeInsets.all(Pixels.defaultMargin),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate.fixed(
-              [
-                _buildDishDropdown("Valgt ret"),
-              ],
+        SliverSafeArea(
+          top: false,
+          bottom: false,
+          sliver: SliverPadding(
+            padding: EdgeInsets.all(Pixels.defaultMargin),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate.fixed(
+                [
+                  _buildDishDropdown("Valgt ret"),
+                  SizedBox(height: 30),
+                  ..._buildIngredients(),
+                  if (chosenDish != null) _buildAddIngredientButton(),
+                  SizedBox(height: 20),
+                  if (chosenDish != null) _buildSaveDishButton(),
+                  SizedBox(height: 20),
+                  _buildNewIngredientCategoryButtons(),
+                ],
+              ),
             ),
-          ),
-        ),
-        SliverPadding(
-          padding: EdgeInsets.only(
-            top: Pixels.defaultMargin,
-            left: Pixels.defaultMargin,
-            right: Pixels.defaultMargin,
-          ),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate.fixed(
-              _buildIngredients(),
-            ),
-          ),
-        ),
-        SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: Pixels.defaultMargin),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate.fixed(
-              [
-                if (chosenDish != null) _buildAddIngredientButton(),
-                SizedBox(height: 20),
-                if (chosenDish != null) _buildSaveDishButton(),
-                SizedBox(height: 20),
-                _buildNewIngredientCategoryButtons(),
-              ],
-            ),
-          ),
-        ),
-        SliverPadding(
-          padding: EdgeInsets.only(bottom: 100),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate.fixed([]),
           ),
         ),
       ],

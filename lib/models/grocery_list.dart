@@ -7,6 +7,6 @@ class GroceryList {
   GroceryList({required this.items, this.mealPlan});
 
   factory GroceryList.empty() {
-    return GroceryList(items: Map());
+    return GroceryList(items: {});
   }
 }
