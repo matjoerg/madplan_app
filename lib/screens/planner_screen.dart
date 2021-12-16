@@ -26,11 +26,11 @@ class _PlannerScreenState extends State<PlannerScreen> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         leading: TextButton(
-          child: Text('Annuller'),
+          child: const Text('Annuller'),
           onPressed: () => Navigator.of(context).pop(),
         ),
         trailing: TextButton(
-          child: Text('Opret'),
+          child: const Text('Opret'),
           onPressed: () {
             BlocProvider.of<GroceryListBloc>(context).add(GroceryListCreated(mealPlan: MealPlan()));
             Navigator.of(context).pop();
@@ -67,7 +67,7 @@ class _PlannerScreenState extends State<PlannerScreen> {
     for (var weekday in Weekday.all) {
       weekdayDropdowns.add(_buildDropdown(weekday));
       if (weekday != Weekday.sunday) {
-        weekdayDropdowns.add(SizedBox(height: 10));
+        weekdayDropdowns.add(const SizedBox(height: 10));
       }
     }
     return weekdayDropdowns;
@@ -77,13 +77,13 @@ class _PlannerScreenState extends State<PlannerScreen> {
     return DropdownSearch<String>(
       mode: Mode.DIALOG,
       showSearchBox: true,
-      searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
+      searchFieldProps: TextFieldProps(decoration: const SearchDecoration()),
       //dropdownSearchDecoration: InputDecoration(labelText: weekday, hintText: "Vælg en ret"),
       label: weekday,
       hint: "Vælg en ret",
       showClearButton: true,
       showSelectedItems: true,
-      items: ["Ret", "Retteret", "Ret med ret"],
+      items: const ["Ret", "Retteret", "Ret med ret"],
       onChanged: (selectedItem) {
         _addMainDishToMealPlan(selectedItem, weekday);
       },

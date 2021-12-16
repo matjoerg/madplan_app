@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:madplan_app/services/service_locator.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -23,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
       showCupertinoModalBottomSheet(
         context: context,
         useRootNavigator: true,
-        builder: (context) => PlannerScreen(),
+        builder: (context) => const PlannerScreen(),
       );
     } else {
       _currentTabIndex = index;
@@ -36,15 +35,15 @@ class _HomeScreenState extends State<HomeScreen> {
       tabBar: CupertinoTabBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.list_bullet),
+            icon: const Icon(CupertinoIcons.list_bullet),
             label: ScreenConstants.list.title,
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.plus),
+            icon: const Icon(CupertinoIcons.plus),
             label: ScreenConstants.planner.title,
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.table),
+            icon: const Icon(CupertinoIcons.table),
             label: ScreenConstants.database.title,
           ),
         ],
@@ -56,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
         switch (index) {
           case 0:
             _returnValue = CupertinoTabView(builder: (context) {
-              return CupertinoPageScaffold(
+              return const CupertinoPageScaffold(
                 child: ListScreen(),
               );
             });
@@ -65,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
             break;
           case 2:
             _returnValue = CupertinoTabView(builder: (context) {
-              return CupertinoPageScaffold(
+              return const CupertinoPageScaffold(
                 child: DishScreen(),
               );
             });

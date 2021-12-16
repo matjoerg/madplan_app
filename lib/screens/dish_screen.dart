@@ -28,17 +28,17 @@ class _DishScreenState extends State<DishScreen> {
           top: false,
           bottom: false,
           sliver: SliverPadding(
-            padding: EdgeInsets.all(Pixels.defaultMargin),
+            padding: const EdgeInsets.all(Pixels.defaultMargin),
             sliver: SliverList(
               delegate: SliverChildListDelegate.fixed(
                 [
                   _buildDishDropdown("Valgt ret"),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   ..._buildIngredients(),
                   if (chosenDish != null) _buildAddIngredientButton(),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   if (chosenDish != null) _buildSaveDishButton(),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   _buildNewIngredientCategoryButtons(),
                 ],
               ),
@@ -55,11 +55,11 @@ class _DishScreenState extends State<DishScreen> {
       child: DropdownSearch<String>(
         mode: Mode.MENU,
         showSearchBox: true,
-        searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
+        searchFieldProps: TextFieldProps(decoration: const SearchDecoration()),
         //dropdownSearchDecoration: InputDecoration(labelText: title),
         showClearButton: false,
         showSelectedItems: true,
-        items: ["Opret ny", "Ret", "Retteret", "Ret med ret"],
+        items: const ["Opret ny", "Ret", "Retteret", "Ret med ret"],
         onChanged: _setDishName,
         label: title,
         dropdownBuilder: _customDishDropdown,
@@ -73,18 +73,18 @@ class _DishScreenState extends State<DishScreen> {
       return ingredientsList;
     }
     int index = 0;
-    chosenDish!.ingredients.forEach((ingredient) {
+    for (var ingredient in chosenDish!.ingredients) {
       ingredientsList.add(_buildIngredientDropdownRow(ingredient, index));
       index++;
-    });
+    }
     return ingredientsList;
   }
 
   Widget _buildAddIngredientButton() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 150),
+      padding: const EdgeInsets.symmetric(horizontal: 150),
       child: CupertinoButton(
-        child: Icon(CupertinoIcons.add_circled_solid),
+        child: const Icon(CupertinoIcons.add_circled_solid),
         onPressed: () {
           setState(
             () {
@@ -99,13 +99,13 @@ class _DishScreenState extends State<DishScreen> {
   Widget _buildNewIngredientCategoryButtons() {
     return Row(
       children: [
-        Spacer(),
+        const Spacer(),
         TextButton(
-          child: Text("Ny vare"),
+          child: const Text("Ny vare"),
           onPressed: _buildNewIngredientDialog,
         ),
         TextButton(
-          child: Text("Ny kategori"),
+          child: const Text("Ny kategori"),
           onPressed: _addNewCategory,
         ),
       ],
@@ -114,9 +114,9 @@ class _DishScreenState extends State<DishScreen> {
 
   Widget _buildSaveDishButton() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 50),
+      padding: const EdgeInsets.symmetric(horizontal: 50),
       child: CupertinoButton.filled(
-        child: Text("Gem ret"),
+        child: const Text("Gem ret"),
         onPressed: () {
           //TODO: Save dish
         },
@@ -130,11 +130,11 @@ class _DishScreenState extends State<DishScreen> {
       context: context,
       builder: (BuildContext context) {
         return CupertinoAlertDialog(
-          title: Text("Ny vare"),
+          title: const Text("Ny vare"),
           content: Column(
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 15),
+                padding: const EdgeInsets.symmetric(vertical: 15),
                 child: CupertinoTextField(
                   autofocus: true,
                   onChanged: (String? ingredientName) {
@@ -152,10 +152,10 @@ class _DishScreenState extends State<DishScreen> {
                   showClearButton: false,
                   showSelectedItems: true,
                   showAsSuffixIcons: false,
-                  searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
+                  searchFieldProps: TextFieldProps(decoration: const SearchDecoration()),
                   //dropdownSearchDecoration: InputDecoration(labelText: "Kategori"),
                   label: "Kategori",
-                  items: [
+                  items: const [
                     "Frugt og grønt",
                     "Kolonial",
                     "Frost",
@@ -173,14 +173,14 @@ class _DishScreenState extends State<DishScreen> {
           ),
           actions: [
             CupertinoDialogAction(
-              child: Text("Gem"),
+              child: const Text("Gem"),
               onPressed: () {
                 //TODO: Save ingredient to database
                 Navigator.pop(context);
               },
             ),
             CupertinoDialogAction(
-                child: Text("Annuller"),
+                child: const Text("Annuller"),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -197,9 +197,9 @@ class _DishScreenState extends State<DishScreen> {
       context: context,
       builder: (BuildContext context) {
         return CupertinoAlertDialog(
-          title: Text("Ny kategori"),
+          title: const Text("Ny kategori"),
           content: Padding(
-            padding: EdgeInsets.only(top: 15),
+            padding: const EdgeInsets.only(top: 15),
             child: CupertinoTextField(
               autofocus: true,
               onChanged: (String? ingredientName) {
@@ -212,14 +212,14 @@ class _DishScreenState extends State<DishScreen> {
           ),
           actions: [
             CupertinoDialogAction(
-              child: Text("Gem"),
+              child: const Text("Gem"),
               onPressed: () {
                 //TODO: Save category to database
                 Navigator.pop(context);
               },
             ),
             CupertinoDialogAction(
-                child: Text("Annuller"),
+                child: const Text("Annuller"),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -242,14 +242,14 @@ class _DishScreenState extends State<DishScreen> {
               child: DropdownSearch<String>(
                 mode: Mode.MENU,
                 showSearchBox: true,
-                searchFieldProps: TextFieldProps(decoration: SearchDecoration()),
+                searchFieldProps: TextFieldProps(decoration: const SearchDecoration()),
                 //dropdownSearchDecoration: InputDecoration(labelText: "Vare " + (index + 1).toString()),
                 label: "Vare " + (index + 1).toString(),
                 showClearButton: false,
                 showSelectedItems: true,
-                dropdownButtonBuilder: (_) => SizedBox(width: 8),
+                dropdownButtonBuilder: (_) => const SizedBox(width: 8),
                 showAsSuffixIcons: false,
-                items: [
+                items: const [
                   "Kartofler",
                   "Broccoli",
                   "Rød peber",
@@ -265,11 +265,11 @@ class _DishScreenState extends State<DishScreen> {
               child: SizedBox(
                 height: 48,
                 child: TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: "Antal",
                       floatingLabelBehavior: FloatingLabelBehavior.always),
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   onChanged: (String? selectedCount) {
                     if (selectedCount == null) {
                       return;
@@ -285,9 +285,9 @@ class _DishScreenState extends State<DishScreen> {
                 mode: Mode.MENU,
                 showClearButton: false,
                 showSelectedItems: true,
-                dropdownButtonBuilder: (_) => SizedBox(width: 8),
+                dropdownButtonBuilder: (_) => const SizedBox(width: 8),
                 showAsSuffixIcons: false,
-                items: [
+                items: const [
                   "Frugt og grønt",
                   "Kolonial",
                   "Frost",
@@ -309,7 +309,7 @@ class _DishScreenState extends State<DishScreen> {
 
   Widget _buildRemoveIngredientButton(int index) {
     return CupertinoButton(
-        child: Icon(CupertinoIcons.clear_circled),
+        child: const Icon(CupertinoIcons.clear_circled),
         onPressed: () {
           setState(() {
             print(index);
@@ -326,7 +326,7 @@ class _DishScreenState extends State<DishScreen> {
       );
     }
     if (selectedItem == null) {
-      return Text(
+      return const Text(
         "Vælg en ret eller opret en ny",
         style: TextStyle(color: CupertinoColors.placeholderText),
       );

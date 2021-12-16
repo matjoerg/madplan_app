@@ -16,7 +16,7 @@ class DishCreatingNew extends DishState {}
 class DishLoaded extends DishState {
   final Dish chosenDish;
 
-  DishLoaded({required this.chosenDish});
+  const DishLoaded({required this.chosenDish});
 
   @override
   List<Object> get props => [chosenDish];

@@ -23,7 +23,7 @@ class _ListScreenState extends State<ListScreen> {
           largeTitle: Text(ScreenConstants.list.title),
         ),
         SliverPadding(
-          padding: EdgeInsets.all(Pixels.defaultMargin),
+          padding: const EdgeInsets.all(Pixels.defaultMargin),
           sliver: BlocBuilder<GroceryListBloc, GroceryListState>(
             builder: (context, state) {
               if (state is GroceryListLoaded) {
@@ -63,16 +63,16 @@ class _ListScreenState extends State<ListScreen> {
 
   List<Widget> _buildItemsList(List<Item> items) {
     List<Widget> itemTiles = [];
-    items.forEach((item) {
+    for (var item in items) {
       itemTiles.add(_buildItemTile(item));
-    });
+    }
     return itemTiles;
   }
 
   Widget _buildItemTile(Item item) {
     return ListTile(
       title: Text(item.name),
-      leading: item.checked ? Icon(CupertinoIcons.check_mark_circled_solid) : Icon(CupertinoIcons.circle),
+      leading: item.checked ? const Icon(CupertinoIcons.check_mark_circled_solid) : const Icon(CupertinoIcons.circle),
       onTap: () {
         setState(() {
           item.checked = !item.checked;
