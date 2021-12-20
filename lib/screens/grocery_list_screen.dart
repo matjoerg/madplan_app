@@ -22,19 +22,23 @@ class _ListScreenState extends State<ListScreen> {
         CupertinoSliverNavigationBar(
           largeTitle: Text(ScreenConstants.list.title),
         ),
-        SliverPadding(
-          padding: const EdgeInsets.all(Pixels.defaultMargin),
-          sliver: BlocBuilder<GroceryListBloc, GroceryListState>(
-            builder: (context, state) {
-              if (state is GroceryListLoaded) {
-                return SliverList(
-                  delegate: SliverChildListDelegate.fixed(
-                    _buildGroceryList(state),
-                  ),
-                );
-              }
-              return Container();
-            },
+        SliverSafeArea(
+          top: false,
+          bottom: false,
+          sliver: SliverPadding(
+            padding: const EdgeInsets.all(Pixels.defaultMargin),
+            sliver: BlocBuilder<GroceryListBloc, GroceryListState>(
+              builder: (context, state) {
+                if (state is GroceryListLoaded) {
+                  return SliverList(
+                    delegate: SliverChildListDelegate.fixed(
+                      _buildGroceryList(state),
+                    ),
+                  );
+                }
+                return Container();
+              },
+            ),
           ),
         ),
       ],
@@ -53,9 +57,18 @@ class _ListScreenState extends State<ListScreen> {
     return Material(
       color: Colors.white,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(categoryName),
+          Text(
+            categoryName,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
           ..._buildItemsList(items),
+          const SizedBox(height: 25),
         ],
       ),
     );
@@ -70,14 +83,33 @@ class _ListScreenState extends State<ListScreen> {
   }
 
   Widget _buildItemTile(Item item) {
-    return ListTile(
-      title: Text(item.name),
-      leading: item.checked ? const Icon(CupertinoIcons.check_mark_circled_solid) : const Icon(CupertinoIcons.circle),
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         setState(() {
           item.checked = !item.checked;
         });
       },
+      child: Container(
+        height: 40,
+        alignment: Alignment.centerLeft,
+        child: RichText(
+          text: TextSpan(
+            text: item.name,
+            style: TextStyle(
+              fontSize: 16,
+              color: item.checked ? Colors.grey : Colors.black,
+              decoration: item.checked ? TextDecoration.lineThrough : null,
+            ),
+            children: [
+              TextSpan(
+                text: '  (' + item.count.ceil().toString() + ')',
+                style: const TextStyle(color: Colors.grey),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
