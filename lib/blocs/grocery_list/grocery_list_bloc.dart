@@ -12,7 +12,7 @@ class GroceryListBloc extends Bloc<GroceryListEvent, GroceryListState> {
     on<GroceryListCreated>((event, emit) {
       emit(GroceryListLoaded(
         groceryList: GroceryList(
-          items: {
+          itemsByCategory: {
             "Frugt og grønt": [
               Item(name: "Kartofler", category: "Frugt og grønt"),
               Item(name: "Bananer", category: "Frugt og grønt"),

@@ -47,7 +47,7 @@ class _ListScreenState extends State<ListScreen> {
 
   List<Widget> _buildGroceryList(GroceryListLoaded state) {
     List<Widget> categoryItemsList = [];
-    state.groceryList.items.forEach((key, value) {
+    state.groceryList.itemsByCategory.forEach((key, value) {
       categoryItemsList.add(_buildCategoryItemsList(key, value));
     });
     return categoryItemsList;
