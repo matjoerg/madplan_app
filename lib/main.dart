@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:madplan_app/screens/home_screen.dart';
@@ -18,16 +19,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: blocProviderList,
-      child: const CupertinoApp(
-        theme: CupertinoThemeData(
-          brightness: Brightness.light,
+      child: Theme(
+        data: ThemeData(
+          splashFactory: NoSplash.splashFactory,
         ),
-        localizationsDelegates: <LocalizationsDelegate<dynamic>>[
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        home: HomeScreen(),
+        child: const CupertinoApp(
+          theme: CupertinoThemeData(
+            brightness: Brightness.light,
+          ),
+          localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          home: HomeScreen(),
+        ),
       ),
     );
   }

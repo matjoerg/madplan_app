@@ -2,6 +2,9 @@ part of 'grocery_list_bloc.dart';
 
 abstract class GroceryListEvent extends Equatable {
   const GroceryListEvent();
+
+  @override
+  List<Object> get props => [];
 }
 
 class GroceryListCreated extends GroceryListEvent {
