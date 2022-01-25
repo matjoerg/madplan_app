@@ -19,11 +19,11 @@ class DatabaseService {
     return _database!;
   }
 
-  static Future<Database> _initDatabase() async {
+  Future<Database> _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
     return await openDatabase(path, onCreate: _onCreate);
   }
 
-  static _onCreate(Database db, int version) {}
+  _onCreate(Database db, int version) {}
 }
