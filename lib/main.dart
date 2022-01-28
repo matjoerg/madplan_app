@@ -8,6 +8,7 @@ import 'package:madplan_app/services/service_locator.dart';
 import 'blocs/grocery_list/grocery_list_bloc.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   setupServiceLocator();
   runApp(const MyApp());
 }
@@ -17,6 +18,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DatabaseService db = serviceLocator.get<DatabaseService>();
+    db.isOpen();
     return MultiBlocProvider(
       providers: blocProviderList,
       child: Theme(
