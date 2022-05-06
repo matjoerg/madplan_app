@@ -4,6 +4,12 @@
 .dart_tool/
 .packages
 build/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
 
 # Directory created by dartdoc
 # If you don't generate documentation locally you can remove this line.
