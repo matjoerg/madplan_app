@@ -104,13 +104,17 @@ class DatabaseService {
     ''');
   }
 
-  getDishes() {
-    _database.rawQuery('''
+  Future<List<Map<String, Object?>>> getDishes() async {
+    List<Map<String, Object?>> dishes = await _database.rawQuery('''
     SELECT $label FROM $tableDishes
     ''');
+    return dishes;
   }
 
   isOpen() async {
     GetIt.instance.isReady(instance: this).then((value) => debugPrint(_database.isOpen.toString()));
   }
+
+  // Used for testing
+  _seedDatabase() {}
 }
