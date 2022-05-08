@@ -1,9 +1,9 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:madplan_app/components/search_decoration.dart';
-import 'package:madplan_app/constants/pixels.dart';
-import 'package:madplan_app/models/models.dart';
+import 'package:madplan_app/presentation/components/search_decoration.dart';
+import 'package:madplan_app/presentation/constants/pixels.dart';
+import 'package:madplan_app/data/models/models.dart';
 
 import 'screens.dart';
 

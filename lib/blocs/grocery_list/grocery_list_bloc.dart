@@ -1,8 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:madplan_app/models/grocery_list.dart';
-import 'package:madplan_app/models/item.dart';
-import 'package:madplan_app/models/meal_plan.dart';
+import 'package:madplan_app/data/models/models.dart';
 
 part 'grocery_list_event.dart';
 part 'grocery_list_state.dart';

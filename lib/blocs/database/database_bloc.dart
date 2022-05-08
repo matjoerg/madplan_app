@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:madplan_app/models/item.dart';
+import 'package:madplan_app/data/models/item.dart';
 
 part 'database_event.dart';
 part 'database_state.dart';

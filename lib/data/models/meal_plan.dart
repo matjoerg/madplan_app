@@ -1,4 +1,4 @@
-import 'package:madplan_app/constants/week_day.dart';
+import 'package:madplan_app/utils/week_day.dart';
 
 import 'meal.dart';
 

@@ -1,4 +1,4 @@
-import 'package:madplan_app/models/item.dart';
+import 'package:madplan_app/data/models/item.dart';
 
 class Dish {
   String name;

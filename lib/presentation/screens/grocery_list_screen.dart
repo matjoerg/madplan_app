@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:madplan_app/blocs/grocery_list/grocery_list_bloc.dart';
-import 'package:madplan_app/constants/pixels.dart';
-import 'package:madplan_app/models/item.dart';
+import 'package:madplan_app/presentation/constants/pixels.dart';
+import 'package:madplan_app/data/models/item.dart';
 
 import 'screens.dart';
 

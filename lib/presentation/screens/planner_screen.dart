@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:madplan_app/blocs/grocery_list/grocery_list_bloc.dart';
-import 'package:madplan_app/components/search_decoration.dart';
-import 'package:madplan_app/constants/pixels.dart';
-import 'package:madplan_app/constants/week_day.dart';
-import 'package:madplan_app/models/meal_plan.dart';
-import 'package:madplan_app/services/service_locator.dart';
+import 'package:madplan_app/presentation/components/search_decoration.dart';
+import 'package:madplan_app/presentation/constants/pixels.dart';
+import 'package:madplan_app/utils/week_day.dart';
+import 'package:madplan_app/data/models/meal_plan.dart';
+import 'package:madplan_app/data/services/service_locator.dart';
 
 import 'screens.dart';
 

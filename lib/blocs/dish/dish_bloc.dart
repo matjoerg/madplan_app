@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:madplan_app/models/models.dart';
+import 'package:madplan_app/data/models/models.dart';
 
 part 'dish_event.dart';
 part 'dish_state.dart';
