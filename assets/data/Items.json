@@ -1,0 +1,157 @@
+[
+  {
+    "id": 1,
+    "label": "Purløg",
+    "category_id": 1
+  },
+  {
+    "id": 2,
+    "label": "Kartofler",
+    "category_id": 1
+  },
+  {
+    "id": 3,
+    "label": "Æg",
+    "category_id": 2
+  },
+  {
+    "id": 4,
+    "label": "Rugbrød",
+    "category_id": 7
+  },
+  {
+    "id": 5,
+    "label": "Spegepølse",
+    "category_id": 6
+  },
+  {
+    "id": 6,
+    "label": "Aubergine",
+    "category_id": 1
+  },
+  {
+    "id": 7,
+    "label": "Gulerødder",
+    "category_id": 1
+  },
+  {
+    "id": 8,
+    "label": "Mælk",
+    "category_id": 2
+  },
+  {
+    "id": 9,
+    "label": "Revet ost",
+    "category_id": 2
+  },
+  {
+    "id": 10,
+    "label": "Smør",
+    "category_id": 2
+  },
+  {
+    "id": 11,
+    "label": "Lasagneplader",
+    "category_id": 3
+  },
+  {
+    "id": 12,
+    "label": "Hvedemel",
+    "category_id": 3
+  },
+  {
+    "id": 13,
+    "label": "Hakkede tomater",
+    "category_id": 3
+  },
+  {
+    "id": 14,
+    "label": "Oksefars",
+    "category_id": 4
+  },
+  {
+    "id": 15,
+    "label": "Kidneybønner",
+    "category_id": 3
+  },
+  {
+    "id": 16,
+    "label": "Majs",
+    "category_id": 5
+  },
+  {
+    "id": 17,
+    "label": "Ærter",
+    "category_id": 5
+  },
+  {
+    "id": 18,
+    "label": "Rød peber",
+    "category_id": 1
+  },
+  {
+    "id": 19,
+    "label": "Avocado",
+    "category_id": 1
+  },
+  {
+    "id": 20,
+    "label": "Agurk",
+    "category_id": 1
+  },
+  {
+    "id": 21,
+    "label": "Tun",
+    "category_id": 3
+  },
+  {
+    "id": 22,
+    "label": "Pitabrød",
+    "category_id": 7
+  },
+  {
+    "id": 23,
+    "label": "Dressing",
+    "category_id": 3
+  },
+  {
+    "id": 24,
+    "label": "Squash",
+    "category_id": 1
+  },
+  {
+    "id": 25,
+    "label": "Porre",
+    "category_id": 1
+  },
+  {
+    "id": 26,
+    "label": "Hytteost",
+    "category_id": 2
+  },
+  {
+    "id": 27,
+    "label": "Tærtedej",
+    "category_id": 5
+  },
+  {
+    "id": 28,
+    "label": "Tørret skinke",
+    "category_id": 6
+  },
+  {
+    "id": 29,
+    "label": "Fløde",
+    "category_id": 2
+  },
+  {
+    "id": 30,
+    "label": "Græskarkerner",
+    "category_id": 1
+  },
+  {
+    "id": 31,
+    "label": "Løg",
+    "category_id": 1
+  }
+]

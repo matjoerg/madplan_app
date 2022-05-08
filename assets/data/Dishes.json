@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "label": "Æggekage",
+    "dish_type_id": 0
+  },
+  {
+    "id": 2,
+    "label": "Lasagne",
+    "dish_type_id": 0
+  },
+  {
+    "id": 3,
+    "label": "Pitabrød",
+    "dish_type_id": 0
+  },
+  {
+    "id": 4,
+    "label": "Squashtærte",
+    "dish_type_id": 0
+  },
+  {
+    "id": 5,
+    "label": "Grøntsagssuppe",
+    "dish_type_id": 0
+  }
+]

@@ -1,0 +1,167 @@
+[
+  {
+    "dish_id": 1,
+    "item_id": 1,
+    "count": 0.25
+  },
+  {
+    "dish_id": 1,
+    "item_id": 2,
+    "count": 0.25
+  },
+  {
+    "dish_id": 1,
+    "item_id": 3,
+    "count": 0.75
+  },
+  {
+    "dish_id": 1,
+    "item_id": 4,
+    "count": 0.5
+  },
+  {
+    "dish_id": 1,
+    "item_id": 5,
+    "count": 0.25
+  },
+  {
+    "dish_id": 2,
+    "item_id": 6,
+    "count": 1
+  },
+  {
+    "dish_id": 2,
+    "item_id": 7,
+    "count": 0.2
+  },
+  {
+    "dish_id": 2,
+    "item_id": 8,
+    "count": 0.5
+  },
+  {
+    "dish_id": 2,
+    "item_id": 9,
+    "count": 1
+  },
+  {
+    "dish_id": 2,
+    "item_id": 10,
+    "count": 0.25
+  },
+  {
+    "dish_id": 2,
+    "item_id": 11,
+    "count": 0.25
+  },
+  {
+    "dish_id": 2,
+    "item_id": 12,
+    "count": 0.05
+  },
+  {
+    "dish_id": 2,
+    "item_id": 13,
+    "count": 2
+  },
+  {
+    "dish_id": 2,
+    "item_id": 14,
+    "count": 1
+  },
+  {
+    "dish_id": 2,
+    "item_id": 15,
+    "count": 1
+  },
+  {
+    "dish_id": 3,
+    "item_id": 16,
+    "count": 0.2
+  },
+  {
+    "dish_id": 3,
+    "item_id": 18,
+    "count": 1
+  },
+  {
+    "dish_id": 3,
+    "item_id": 19,
+    "count": 1
+  },
+  {
+    "dish_id": 3,
+    "item_id": 20,
+    "count": 0.5
+  },
+  {
+    "dish_id": 3,
+    "item_id": 21,
+    "count": 1
+  },
+  {
+    "dish_id": 3,
+    "item_id": 22,
+    "count": 1
+  },
+  {
+    "dish_id": 3,
+    "item_id": 23,
+    "count": 0.25
+  },
+  {
+    "dish_id": 4,
+    "item_id": 24,
+    "count": 1
+  },
+  {
+    "dish_id": 4,
+    "item_id": 25,
+    "count": 3
+  },
+  {
+    "dish_id": 4,
+    "item_id": 26,
+    "count": 1
+  },
+  {
+    "dish_id": 4,
+    "item_id": 27,
+    "count": 1
+  },
+  {
+    "dish_id": 4,
+    "item_id": 28,
+    "count": 1
+  },
+  {
+    "dish_id": 5,
+    "item_id": 2,
+    "count": 0.5
+  },
+  {
+    "dish_id": 5,
+    "item_id": 25,
+    "count": 3
+  },
+  {
+    "dish_id": 5,
+    "item_id": 31,
+    "count": 0.2
+  },
+  {
+    "dish_id": 5,
+    "item_id": 29,
+    "count": 1
+  },
+  {
+    "dish_id": 5,
+    "item_id": 30,
+    "count": 0.5
+  },
+  {
+    "dish_id": 5,
+    "item_id": 5,
+    "count": 0.25
+  }
+]
