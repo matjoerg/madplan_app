@@ -39,6 +39,7 @@ class DatabaseService {
   Future<Database> _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
+    await deleteDatabase(path);
     return await openDatabase(path, onCreate: _onCreate, version: 1);
   }
 
@@ -48,6 +49,8 @@ class DatabaseService {
     await _createTableDishesItems(db);
     await _createTableCategories(db);
     await _createTableDishTypes(db);
+
+    await _seedDatabase(db);
   }
 
   _createTableDishes(Database db) async {
@@ -116,5 +119,27 @@ class DatabaseService {
   }
 
   // Used for testing
-  _seedDatabase() {}
+  _seedDatabase(Database db) async {
+    List<dynamic> dishes = jsonDecode(await rootBundle.loadString('assets/seed_data/Dishes.json'));
+    List<dynamic> items = jsonDecode(await rootBundle.loadString('assets/seed_data/Items.json'));
+    List<dynamic> categories = jsonDecode(await rootBundle.loadString('assets/seed_data/Categories.json'));
+    List<dynamic> dishesItems = jsonDecode(await rootBundle.loadString('assets/seed_data/DishesItems.json'));
+    List<dynamic> dishTypes = jsonDecode(await rootBundle.loadString('assets/seed_data/DishTypes.json'));
+    List<List<dynamic>> tables = [dishes, items, categories, dishesItems, dishTypes];
+
+    String sqlDishes = "INSERT INTO $tableDishes ($columnId, $label, $dishTypeId) VALUES (?, ?, ?)";
+    String sqlItems = "INSERT INTO $tableItems ($columnId, $label, $categoryId) VALUES (?, ?, ?)";
+    String sqlCategories = "INSERT INTO $tableCategories ($columnId, $label, $sorting) VALUES (?, ?, ?)";
+    String sqlDishesItems = "INSERT INTO $tableDishesItems ($dishId, $itemId, $count) VALUES (?, ?, ?)";
+    String sqlDishTypes = "INSERT INTO $tableDishTypes ($columnId, $label) VALUES (?, ?)";
+    List<String> sqls = [sqlDishes, sqlItems, sqlCategories, sqlDishesItems, sqlDishTypes];
+
+    int sqlsIndex = 0;
+    for (List<dynamic> table in tables) {
+      for (Map<String, dynamic> entry in table) {
+        await db.rawInsert(sqls[sqlsIndex], entry.values.toList());
+      }
+      sqlsIndex += 1;
+    }
+  }
 }
