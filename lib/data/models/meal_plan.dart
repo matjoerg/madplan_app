@@ -3,7 +3,7 @@ import 'package:madplan_app/utils/week_day.dart';
 import 'meal.dart';
 
 class MealPlan {
-  Map<String, Meal?> meals = {
+  final Map<String, Meal?> _meals = {
     Weekday.monday: null,
     Weekday.tuesday: null,
     Weekday.wednesday: null,
@@ -17,27 +17,27 @@ class MealPlan {
 
   setMainDish(String weekday, String? dishName) {
     if (dishName == null) {
-      meals[weekday] = null;
-    } else if (meals[weekday] == null) {
-      meals[weekday] = Meal(mainDishName: dishName);
+      _meals[weekday] = null;
+    } else if (_meals[weekday] == null) {
+      _meals[weekday] = Meal(mainDishName: dishName);
     } else {
-      meals[weekday]?.mainDishName = dishName;
+      _meals[weekday]?.mainDishName = dishName;
     }
   }
 
   setSideDish(String weekday, String? dishName) {
     if (dishName == null) {
-      meals[weekday]?.sideDishName = null;
+      _meals[weekday]?.sideDishName = null;
     } else {
-      meals[weekday]?.sideDishName = dishName;
+      _meals[weekday]?.sideDishName = dishName;
     }
   }
 
-  Meal? get monday => meals[Weekday.monday];
-  Meal? get tuesday => meals[Weekday.tuesday];
-  Meal? get wednesday => meals[Weekday.wednesday];
-  Meal? get thursday => meals[Weekday.thursday];
-  Meal? get friday => meals[Weekday.friday];
-  Meal? get saturday => meals[Weekday.saturday];
-  Meal? get sunday => meals[Weekday.sunday];
+  Meal? get monday => _meals[Weekday.monday];
+  Meal? get tuesday => _meals[Weekday.tuesday];
+  Meal? get wednesday => _meals[Weekday.wednesday];
+  Meal? get thursday => _meals[Weekday.thursday];
+  Meal? get friday => _meals[Weekday.friday];
+  Meal? get saturday => _meals[Weekday.saturday];
+  Meal? get sunday => _meals[Weekday.sunday];
 }
