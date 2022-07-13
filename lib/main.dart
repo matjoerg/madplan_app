@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:madplan_app/blocs/database/database_bloc.dart';
+import 'package:madplan_app/data/repositories/database_repository.dart';
 import 'package:madplan_app/presentation/screens/home_screen.dart';
 import 'package:madplan_app/data/services/service_locator.dart';
 
@@ -18,8 +20,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DatabaseService db = serviceLocator.get<DatabaseService>();
-    db.isOpen();
     return MultiBlocProvider(
       providers: blocProviderList,
       child: Theme(
@@ -45,5 +45,11 @@ class MyApp extends StatelessWidget {
 final List<BlocProvider> blocProviderList = [
   BlocProvider<GroceryListBloc>(
     create: (BuildContext context) => GroceryListBloc(),
+  ),
+  BlocProvider<DatabaseBloc>(
+    lazy: false,
+    create: (BuildContext context) => DatabaseBloc(
+      databaseRepository: DatabaseRepository(),
+    )..add(DatabaseAppStarted()),
   ),
 ];

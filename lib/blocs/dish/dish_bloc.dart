@@ -7,6 +7,7 @@ part 'dish_state.dart';
 
 class DishBloc extends Bloc<DishEvent, DishState> {
   DishBloc() : super(DishInitial()) {
+
     on<DishEvent>((event, emit) {
       // TODO: implement event handler
     });

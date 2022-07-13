@@ -107,15 +107,25 @@ class DatabaseService {
     ''');
   }
 
-  Future<List<Map<String, Object?>>> getDishes() async {
+  Future<List<Map<String, Object?>>> getDishLabels() async {
     List<Map<String, Object?>> dishes = await _database.rawQuery('''
     SELECT $label FROM $tableDishes
     ''');
     return dishes;
   }
 
+  Future<List<Map<String, Object?>>> getDishIngredients(int dish) async {
+    List<Map<String, Object?>> ingredients = await _database.rawQuery('''
+    SELECT $tableItems.$label, $tableDishesItems.$count, $tableCategories.$label FROM $tableItems
+    INNER JOIN $tableDishesItems ON $tableDishesItems.$itemId = $tableItems.$columnId
+    INNER JOIN $tableCategories ON $tableItems.$categoryId = $tableCategories.$columnId
+    WHERE $tableDishesItems.$dishId = ?
+    ''', [dish]);
+    return ingredients;
+  }
+
   isOpen() async {
-    GetIt.instance.isReady(instance: this).then((value) => debugPrint(_database.isOpen.toString()));
+    await GetIt.instance.isReady(instance: this);
   }
 
   // Used for testing

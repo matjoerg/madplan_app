@@ -7,6 +7,7 @@ part 'grocery_list_state.dart';
 
 class GroceryListBloc extends Bloc<GroceryListEvent, GroceryListState> {
   GroceryListBloc() : super(GroceryListLoaded(groceryList: GroceryList.empty())) {
+
     on<GroceryListCreated>((event, emit) {
       emit(GroceryListLoaded(
         groceryList: GroceryList(

@@ -12,4 +12,8 @@ class Dish {
       ingredients: map['items'],
     );
   }
+
+  static List<Dish> listFromJson(List<dynamic>? json) {
+    return json == null ? [] : json.map((value) => Dish.fromMap(value)).toList();
+  }
 }

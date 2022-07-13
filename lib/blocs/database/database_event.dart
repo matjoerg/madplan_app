@@ -7,6 +7,9 @@ abstract class DatabaseEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class DatabaseAppStarted extends DatabaseEvent {
+}
+
 class DatabaseItemAdded extends DatabaseEvent {
   final Item ingredient;
 
