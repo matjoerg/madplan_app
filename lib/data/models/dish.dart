@@ -1,15 +1,16 @@
 import 'package:madplan_app/data/models/item.dart';
+import 'package:madplan_app/data/services/service_locator.dart';
 
 class Dish {
-  String name;
+  String label;
   List<Item> ingredients;
 
-  Dish({required this.name, required this.ingredients});
+  Dish({required this.label, required this.ingredients});
 
   factory Dish.fromMap(Map<String, dynamic> map) {
     return Dish(
-      name: map['name'],
-      ingredients: map['items'],
+      label: map[DatabaseService.label],
+      ingredients: Item.listFromJson(map[DatabaseService.items]),
     );
   }
 

@@ -9,4 +9,19 @@ abstract class DatabaseState extends Equatable {
 
 class DatabaseInitial extends DatabaseState {}
 
-class DatabaseLoaded extends DatabaseState {}
+class DatabaseLoading extends DatabaseState {}
+
+class DatabaseLoaded extends DatabaseState {
+  final List<Dish> dishes;
+  final List<Item> items;
+
+  const DatabaseLoaded({
+    required this.dishes,
+    required this.items,
+  });
+
+  @override
+  List<Object> get props => [dishes, items];
+}
+
+class DatabaseError extends DatabaseState {}

@@ -95,7 +95,7 @@ class _ListScreenState extends State<ListScreen> {
         alignment: Alignment.centerLeft,
         child: RichText(
           text: TextSpan(
-            text: item.name,
+            text: item.label,
             style: TextStyle(
               fontSize: 16,
               color: item.checked ? Colors.grey : Colors.black,

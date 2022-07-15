@@ -13,12 +13,12 @@ class GroceryListBloc extends Bloc<GroceryListEvent, GroceryListState> {
         groceryList: GroceryList(
           itemsByCategory: {
             "Frugt og grønt": [
-              Item(name: "Kartofler", category: "Frugt og grønt"),
-              Item(name: "Bananer", category: "Frugt og grønt"),
+              Item(label: "Kartofler", categoryLabel: "Frugt og grønt"),
+              Item(label: "Bananer", categoryLabel: "Frugt og grønt"),
             ],
             "Kolonial": [
-              Item(name: "Havregryn", category: "Kolonial"),
-              Item(name: "Rugbrød", category: "Kolonial"),
+              Item(label: "Havregryn", categoryLabel: "Kolonial"),
+              Item(label: "Rugbrød", categoryLabel: "Kolonial"),
             ]
           },
         ),

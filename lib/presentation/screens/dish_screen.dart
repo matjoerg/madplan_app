@@ -1,6 +1,8 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:madplan_app/blocs/database/database_bloc.dart';
 import 'package:madplan_app/presentation/components/search_decoration.dart';
 import 'package:madplan_app/presentation/constants/pixels.dart';
 import 'package:madplan_app/data/models/models.dart';
@@ -15,41 +17,52 @@ class DishScreen extends StatefulWidget {
 }
 
 class _DishScreenState extends State<DishScreen> {
-  Dish? chosenDish;
+  Dish? _chosenDish;
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: <Widget>[
-        CupertinoSliverNavigationBar(
-          largeTitle: Text(ScreenConstants.database.title),
-        ),
-        SliverSafeArea(
-          top: false,
-          bottom: false,
-          sliver: SliverPadding(
-            padding: const EdgeInsets.all(Pixels.defaultMargin),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate.fixed(
-                [
-                  _buildDishDropdown("Valgt ret"),
-                  const SizedBox(height: 30),
-                  ..._buildIngredients(),
-                  if (chosenDish != null) _buildAddIngredientButton(),
-                  const SizedBox(height: 20),
-                  if (chosenDish != null) _buildSaveDishButton(),
-                  const SizedBox(height: 20),
-                  _buildNewIngredientCategoryButtons(),
-                ],
+    return BlocBuilder<DatabaseBloc, DatabaseState>(
+      builder: (context, state) {
+        List<Dish> dishes = [];
+        List<Item> ingredients = [];
+        if (state is DatabaseLoaded) {
+          dishes = state.dishes;
+          ingredients = state.items;
+        }
+
+        return CustomScrollView(
+          slivers: <Widget>[
+            CupertinoSliverNavigationBar(
+              largeTitle: Text(ScreenConstants.database.title),
+            ),
+            SliverSafeArea(
+              top: false,
+              bottom: false,
+              sliver: SliverPadding(
+                padding: const EdgeInsets.all(Pixels.defaultMargin),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate.fixed(
+                    [
+                      _buildDishDropdown(dishes),
+                      const SizedBox(height: 30),
+                      ..._buildIngredients(),
+                      if (_chosenDish != null) _buildAddIngredientButton(),
+                      const SizedBox(height: 20),
+                      if (_chosenDish != null) _buildSaveDishButton(),
+                      const SizedBox(height: 20),
+                      _buildNewIngredientCategoryButtons(),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 
-  _buildDishDropdown(String title) {
+  _buildDishDropdown(List<Dish> dishes) {
     return Material(
       color: Colors.white,
       child: DropdownSearch<String>(
@@ -59,9 +72,9 @@ class _DishScreenState extends State<DishScreen> {
         //dropdownSearchDecoration: InputDecoration(labelText: title),
         showClearButton: false,
         showSelectedItems: true,
-        items: const ["Opret ny", "Ret", "Retteret", "Ret med ret"],
+        items: ["Opret ny", ...dishes.map((e) => e.label).toList()],
         onChanged: _setDishName,
-        label: title,
+        label: "Valgt ret",
         dropdownBuilder: _customDishDropdown,
       ),
     );
@@ -69,11 +82,11 @@ class _DishScreenState extends State<DishScreen> {
 
   List<Widget> _buildIngredients() {
     List<Widget> ingredientsList = [];
-    if (chosenDish == null) {
+    if (_chosenDish == null) {
       return ingredientsList;
     }
     int index = 0;
-    for (var ingredient in chosenDish!.ingredients) {
+    for (var ingredient in _chosenDish!.ingredients) {
       ingredientsList.add(_buildIngredientDropdownRow(ingredient, index));
       index++;
     }
@@ -87,8 +100,8 @@ class _DishScreenState extends State<DishScreen> {
         child: const Icon(CupertinoIcons.add_circled_solid),
         onPressed: () {
           setState(
-            () {
-              chosenDish?.ingredients.add(Item(name: "", category: "", count: 0));
+                () {
+              _chosenDish?.ingredients.add(Item(label: "", categoryLabel: "", count: 0));
             },
           );
         },
@@ -125,7 +138,7 @@ class _DishScreenState extends State<DishScreen> {
   }
 
   _buildNewIngredientDialog() {
-    Item newIngredient = Item(name: "", category: "");
+    Item newIngredient = Item(label: "", categoryLabel: "");
     return showCupertinoDialog(
       context: context,
       builder: (BuildContext context) {
@@ -139,7 +152,7 @@ class _DishScreenState extends State<DishScreen> {
                   autofocus: true,
                   onChanged: (String? ingredientName) {
                     if (ingredientName != null) {
-                      newIngredient.name = ingredientName;
+                      newIngredient.label = ingredientName;
                     }
                   },
                   placeholder: "Navn på vare",
@@ -164,7 +177,7 @@ class _DishScreenState extends State<DishScreen> {
                     if (selectedItem == null) {
                       return;
                     }
-                    newIngredient.category = selectedItem;
+                    newIngredient.categoryLabel = selectedItem;
                   },
                   dropdownBuilder: _customNewIngredientDropdown,
                 ),
@@ -192,7 +205,7 @@ class _DishScreenState extends State<DishScreen> {
   }
 
   _addNewCategory() {
-    Item newIngredient = Item(name: "", category: "");
+    Item newIngredient = Item(label: "", categoryLabel: "");
     return showCupertinoDialog(
       context: context,
       builder: (BuildContext context) {
@@ -204,7 +217,7 @@ class _DishScreenState extends State<DishScreen> {
               autofocus: true,
               onChanged: (String? ingredientName) {
                 if (ingredientName != null) {
-                  newIngredient.name = ingredientName;
+                  newIngredient.label = ingredientName;
                 }
               },
               placeholder: "Navn på kategori",
@@ -254,7 +267,7 @@ class _DishScreenState extends State<DishScreen> {
                   "Broccoli",
                   "Rød peber",
                 ],
-                selectedItem: ingredient.name.isNotEmpty ? ingredient.name : null,
+                selectedItem: ingredient.label.isNotEmpty ? ingredient.label : null,
                 onChanged: (selectedItem) {
                   _setIngredientName(selectedItem, index);
                 },
@@ -274,7 +287,7 @@ class _DishScreenState extends State<DishScreen> {
                     if (selectedCount == null) {
                       return;
                     }
-                    chosenDish!.ingredients[index].count = double.parse(selectedCount.replaceAll(",", "."));
+                    _chosenDish!.ingredients[index].count = double.parse(selectedCount.replaceAll(",", "."));
                   },
                 ),
               ),
@@ -313,7 +326,7 @@ class _DishScreenState extends State<DishScreen> {
         onPressed: () {
           setState(() {
             print(index);
-            chosenDish?.ingredients.removeAt(index);
+            _chosenDish?.ingredients.removeAt(index);
           });
         });
   }
@@ -354,36 +367,36 @@ class _DishScreenState extends State<DishScreen> {
   _setDishName(dynamic selectedItem) {
     if (selectedItem == null) {
       setState(() {
-        chosenDish = null;
+        _chosenDish = null;
       });
       return;
     }
     setState(() {
-      chosenDish = _getDish(selectedItem);
+      _chosenDish = _getDish(selectedItem);
     });
     print(selectedItem);
   }
 
   _setNewDishName(String dishName) {
-    chosenDish!.name = dishName;
+    _chosenDish!.label = dishName;
   }
 
   Dish _getDish(String selectedItem) {
     //TODO: Get dish from database
     if (selectedItem == "Opret ny") {
       return Dish(
-        name: "",
+        label: "",
         ingredients: [
-          Item(name: "", category: "", count: 0),
-          Item(name: "", category: "", count: 0),
+          Item(label: "", categoryLabel: "", count: 0),
+          Item(label: "", categoryLabel: "", count: 0),
         ],
       );
     } else {
       return Dish(
-        name: selectedItem,
+        label: selectedItem,
         ingredients: [
-          Item(name: "Kartofler", category: "Frugt og grønt"),
-          Item(name: "Mel", category: "Kolonial"),
+          Item(label: "Kartofler", categoryLabel: "Frugt og grønt"),
+          Item(label: "Mel", categoryLabel: "Kolonial"),
         ],
       );
     }
@@ -393,7 +406,7 @@ class _DishScreenState extends State<DishScreen> {
     if (selectedItem == null) {
       return;
     }
-    chosenDish!.ingredients[index].name = selectedItem;
+    _chosenDish!.ingredients[index].label = selectedItem;
     print(index.toString() + ": " + selectedItem);
   }
 
@@ -401,7 +414,7 @@ class _DishScreenState extends State<DishScreen> {
     if (selectedItem == null) {
       return;
     }
-    chosenDish!.ingredients[index].category = selectedItem;
+    _chosenDish!.ingredients[index].categoryLabel = selectedItem;
     print(index.toString() + ": " + selectedItem);
   }
 }
