@@ -14,6 +14,13 @@ class Dish {
     );
   }
 
+  Dish copy() {
+    return Dish(
+      label: label,
+      ingredients: ingredients.map((item) => item.copy()).toList(),
+    );
+  }
+
   static List<Dish> listFromJson(List<dynamic>? json) {
     return json == null ? [] : json.map((value) => Dish.fromMap(value)).toList();
   }

@@ -18,16 +18,18 @@ class DishScreen extends StatefulWidget {
 
 class _DishScreenState extends State<DishScreen> {
   Dish? _chosenDish;
+  List<Dish> _dishes = [];
+  List<Item> _ingredients = [];
+  List<Category> _categories = [];
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DatabaseBloc, DatabaseState>(
       builder: (context, state) {
-        List<Dish> dishes = [];
-        List<Item> ingredients = [];
         if (state is DatabaseLoaded) {
-          dishes = state.dishes;
-          ingredients = state.items;
+          _dishes = state.dishes;
+          _ingredients = state.items;
+          _categories = state.categories;
         }
 
         return CustomScrollView(
@@ -37,13 +39,13 @@ class _DishScreenState extends State<DishScreen> {
             ),
             SliverSafeArea(
               top: false,
-              bottom: false,
+              bottom: true,
               sliver: SliverPadding(
                 padding: const EdgeInsets.all(Pixels.defaultMargin),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate.fixed(
                     [
-                      _buildDishDropdown(dishes),
+                      _buildDishDropdown(),
                       const SizedBox(height: 30),
                       ..._buildIngredients(),
                       if (_chosenDish != null) _buildAddIngredientButton(),
@@ -62,7 +64,7 @@ class _DishScreenState extends State<DishScreen> {
     );
   }
 
-  _buildDishDropdown(List<Dish> dishes) {
+  _buildDishDropdown() {
     return Material(
       color: Colors.white,
       child: DropdownSearch<String>(
@@ -72,7 +74,7 @@ class _DishScreenState extends State<DishScreen> {
         //dropdownSearchDecoration: InputDecoration(labelText: title),
         showClearButton: false,
         showSelectedItems: true,
-        items: ["Opret ny", ...dishes.map((e) => e.label).toList()],
+        items: ["Opret ny", ..._dishes.map((e) => e.label).toList()],
         onChanged: _setDishName,
         label: "Valgt ret",
         dropdownBuilder: _customDishDropdown,
@@ -262,11 +264,7 @@ class _DishScreenState extends State<DishScreen> {
                 showSelectedItems: true,
                 dropdownButtonBuilder: (_) => const SizedBox(width: 8),
                 showAsSuffixIcons: false,
-                items: const [
-                  "Kartofler",
-                  "Broccoli",
-                  "Rød peber",
-                ],
+                items: [..._ingredients.map((e) => e.label).toList()],
                 selectedItem: ingredient.label.isNotEmpty ? ingredient.label : null,
                 onChanged: (selectedItem) {
                   _setIngredientName(selectedItem, index);
@@ -278,6 +276,7 @@ class _DishScreenState extends State<DishScreen> {
               child: SizedBox(
                 height: 48,
                 child: TextFormField(
+                  initialValue: ingredient.count.toString(),
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: "Antal",
@@ -300,13 +299,10 @@ class _DishScreenState extends State<DishScreen> {
                 showSelectedItems: true,
                 dropdownButtonBuilder: (_) => const SizedBox(width: 8),
                 showAsSuffixIcons: false,
-                items: const [
-                  "Frugt og grønt",
-                  "Kolonial",
-                  "Frost",
-                ],
+                items: [..._categories.map((e) => e.label).toList()],
                 //dropdownSearchDecoration: InputDecoration(labelText: "Kategori"),
                 label: "Kategori",
+                selectedItem: ingredient.categoryLabel,
                 onChanged: (selectedItem) {
                   _setIngredientCategory(selectedItem, index);
                 },
@@ -392,13 +388,7 @@ class _DishScreenState extends State<DishScreen> {
         ],
       );
     } else {
-      return Dish(
-        label: selectedItem,
-        ingredients: [
-          Item(label: "Kartofler", categoryLabel: "Frugt og grønt"),
-          Item(label: "Mel", categoryLabel: "Kolonial"),
-        ],
-      );
+      return _dishes.firstWhere((dish) => dish.label == selectedItem).copy();
     }
   }
 

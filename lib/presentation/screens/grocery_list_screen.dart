@@ -24,7 +24,7 @@ class _ListScreenState extends State<ListScreen> {
         ),
         SliverSafeArea(
           top: false,
-          bottom: false,
+          bottom: true,
           sliver: SliverPadding(
             padding: const EdgeInsets.all(Pixels.defaultMargin),
             sliver: BlocBuilder<GroceryListBloc, GroceryListState>(

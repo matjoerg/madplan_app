@@ -18,7 +18,7 @@ class DatabaseService {
   static const String itemId = 'item_id';
   static const String items = 'items';
   static const String count = 'count';
-  static const String sorting = 'sorting';
+  static const String sortOrder = 'sort_order';
 
   DatabaseService._privateConstructor() {
     _init();
@@ -95,7 +95,7 @@ class DatabaseService {
     CREATE TABLE $tableCategories (
       $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
       $categoryLabel TEXT UNIQUE NOT NULL,
-      $sorting INTEGER NOT NULL
+      $sortOrder INTEGER NOT NULL
     )
     ''');
   }
@@ -134,6 +134,13 @@ class DatabaseService {
     return items;
   }
 
+  Future<List<Map<String, Object?>>> getCategories() async {
+    List<Map<String, Object?>> categories = await _database.rawQuery('''
+    SELECT $categoryLabel, $sortOrder FROM $tableCategories
+    ''');
+    return categories;
+  }
+
   isOpen() async {
     await GetIt.instance.isReady(instance: this);
   }
@@ -149,7 +156,7 @@ class DatabaseService {
 
     String sqlDishes = "INSERT INTO $tableDishes ($columnId, $label, $dishTypeId) VALUES (?, ?, ?)";
     String sqlItems = "INSERT INTO $tableItems ($columnId, $label, $categoryId) VALUES (?, ?, ?)";
-    String sqlCategories = "INSERT INTO $tableCategories ($columnId, $categoryLabel, $sorting) VALUES (?, ?, ?)";
+    String sqlCategories = "INSERT INTO $tableCategories ($columnId, $categoryLabel, $sortOrder) VALUES (?, ?, ?)";
     String sqlDishesItems = "INSERT INTO $tableDishesItems ($dishId, $itemId, $count) VALUES (?, ?, ?)";
     String sqlDishTypes = "INSERT INTO $tableDishTypes ($columnId, $label) VALUES (?, ?)";
     List<String> sqls = [sqlDishes, sqlItems, sqlCategories, sqlDishesItems, sqlDishTypes];

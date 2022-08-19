@@ -30,4 +30,10 @@ class DatabaseRepository {
     List<Item> items = Item.listFromJson(itemsMap);
     return items;
   }
+
+  Future<List<Category>> getCategories() async {
+    List<Map<String, Object?>> categoriesMap = await _databaseService.getCategories();
+    List<Category> categories = Category.listFromJson(categoriesMap);
+    return categories;
+  }
 }

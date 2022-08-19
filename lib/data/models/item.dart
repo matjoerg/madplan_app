@@ -17,6 +17,15 @@ class Item {
     );
   }
 
+  Item copy() {
+    return Item(
+      label: label,
+      count: count,
+      categoryLabel: categoryLabel,
+      checked: checked,
+    );
+  }
+
   static List<Item> listFromJson(List<dynamic>? json) {
     return json == null ? [] : json.map((value) => Item.fromMap(value)).toList();
   }
