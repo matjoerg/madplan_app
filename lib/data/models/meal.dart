@@ -1,6 +1,8 @@
-class Meal {
-  String mainDishName;
-  String? sideDishName;
+import 'dish.dart';
 
-  Meal({required this.mainDishName, this.sideDishName});
+class Meal {
+  Dish mainDish;
+  Dish? sideDish;
+
+  Meal({required this.mainDish, this.sideDish});
 }

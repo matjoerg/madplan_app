@@ -1,5 +1,8 @@
 import 'package:madplan_app/utils/week_day.dart';
+import 'package:collection/collection.dart';
 
+import 'dish.dart';
+import 'item.dart';
 import 'meal.dart';
 
 class MealPlan {
@@ -15,22 +18,28 @@ class MealPlan {
 
   MealPlan();
 
-  setMainDish(String weekday, String? dishName) {
-    if (dishName == null) {
+  setMainDish(String weekday, Dish? dish) {
+    if (dish == null) {
       _meals[weekday] = null;
     } else if (_meals[weekday] == null) {
-      _meals[weekday] = Meal(mainDishName: dishName);
+      _meals[weekday] = Meal(mainDish: dish);
     } else {
-      _meals[weekday]?.mainDishName = dishName;
+      _meals[weekday]?.mainDish = dish;
     }
   }
 
-  setSideDish(String weekday, String? dishName) {
-    if (dishName == null) {
-      _meals[weekday]?.sideDishName = null;
+  setSideDish(String weekday, Dish? sideDish) {
+    if (sideDish == null) {
+      _meals[weekday]?.sideDish = null;
     } else {
-      _meals[weekday]?.sideDishName = dishName;
+      _meals[weekday]?.sideDish = sideDish;
     }
+  }
+
+  List<Item> getAllItems() {
+    List<Meal> addedMeals = _meals.values.whereNotNull().toList();
+    List<Item> allItems = addedMeals.expand((mealList) => mealList.mainDish.ingredients).toList();
+    return allItems;
   }
 
   Meal? get monday => _meals[Weekday.monday];

@@ -1,3 +1,4 @@
+import 'package:collection/src/iterable_extensions.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -377,7 +378,7 @@ class _DishScreenState extends State<DishScreen> {
     _chosenDish!.label = dishName;
   }
 
-  Dish _getDish(String selectedItem) {
+  Dish? _getDish(String selectedItem) {
     //TODO: Get dish from database
     if (selectedItem == "Opret ny") {
       return Dish(
@@ -388,7 +389,7 @@ class _DishScreenState extends State<DishScreen> {
         ],
       );
     } else {
-      return _dishes.firstWhere((dish) => dish.label == selectedItem).copy();
+      return _dishes.firstWhereOrNull((dish) => dish.label == selectedItem)?.copy();
     }
   }
 

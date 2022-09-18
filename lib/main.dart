@@ -43,13 +43,15 @@ class MyApp extends StatelessWidget {
 }
 
 final List<BlocProvider> blocProviderList = [
-  BlocProvider<GroceryListBloc>(
-    create: (BuildContext context) => GroceryListBloc(),
-  ),
   BlocProvider<DatabaseBloc>(
     lazy: false,
     create: (BuildContext context) => DatabaseBloc(
       databaseRepository: DatabaseRepository(),
     )..add(DatabaseAppStarted()),
+  ),
+  BlocProvider<GroceryListBloc>(
+    create: (BuildContext context) => GroceryListBloc(
+      databaseBloc: BlocProvider.of<DatabaseBloc>(context),
+    ),
   ),
 ];
