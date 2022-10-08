@@ -2,9 +2,9 @@ import 'package:madplan_app/data/services/service_locator.dart';
 
 class Category {
   String label;
-  int sortOrder;
+  int? sortOrder;
 
-  Category({required this.label, required this.sortOrder});
+  Category({required this.label, this.sortOrder});
 
   factory Category.fromMap(Map<String, dynamic> map) {
     return Category(

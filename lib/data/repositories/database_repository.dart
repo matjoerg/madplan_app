@@ -16,8 +16,7 @@ class DatabaseRepository {
     for (Map<String, Object?> dish in dishLabels) {
       int dishId = dish[DatabaseService.columnId] as int;
       String dishLabel = dish[DatabaseService.columnLabel] as String;
-      List<Map<String, Object?>> dishIngredients =
-          await _databaseService.getDishIngredients(dishId);
+      List<Map<String, Object?>> dishIngredients = await _databaseService.getDishIngredients(dishId);
       Map<String, dynamic> dishMap = {DatabaseService.columnLabel: dishLabel, DatabaseService.items: dishIngredients};
       dishes.add(Dish.fromMap(dishMap));
     }
@@ -38,6 +37,11 @@ class DatabaseRepository {
   }
 
   Future<void> saveDish(Dish dish) async {
-
+    int dishId = await _databaseService.saveDish(dish.label);
+    for (Item ingredient in dish.ingredients) {
+      int categoryId = await _databaseService.saveCategory(ingredient.categoryLabel);
+      int itemId = await _databaseService.saveItem(ingredient.label, categoryId);
+      await _databaseService.saveDishItem(dishId, itemId, ingredient.count);
+    }
   }
 }

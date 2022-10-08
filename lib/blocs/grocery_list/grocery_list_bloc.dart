@@ -29,7 +29,15 @@ class GroceryListBloc extends Bloc<GroceryListEvent, GroceryListState> {
         _itemsByCategory.addAll({"": allItems});
       } else {
         categories.sort((a, b) {
-          if (a.sortOrder < b.sortOrder) {
+          int? aSortOrder = a.sortOrder;
+          int? bSortOrder = b.sortOrder;
+          if (aSortOrder == null) {
+            return 1;
+          }
+          if (bSortOrder == null) {
+            return -1;
+          }
+          if (aSortOrder < bSortOrder) {
             return -1;
           }
           return 0;
