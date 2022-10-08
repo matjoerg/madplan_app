@@ -8,8 +8,8 @@ class Category {
 
   factory Category.fromMap(Map<String, dynamic> map) {
     return Category(
-      label: map[DatabaseService.categoryLabel],
-      sortOrder: map[DatabaseService.sortOrder],
+      label: map[DatabaseService.columnCategoryLabel],
+      sortOrder: map[DatabaseService.columnSortOrder],
     );
   }
 

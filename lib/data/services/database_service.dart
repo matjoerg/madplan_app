@@ -10,15 +10,16 @@ class DatabaseService {
   static const String tableDishTypes = 'DishTypes';
 
   static const String columnId = 'id';
-  static const String label = 'label';
-  static const String categoryLabel = 'category_label';
-  static const String dishTypeId = 'type_id';
-  static const String categoryId = 'category_id';
-  static const String dishId = 'dish_id';
-  static const String itemId = 'item_id';
+  static const String columnLabel = 'label';
+  static const String columnCategoryLabel = 'category_label';
+  static const String columnDishTypeId = 'type_id';
+  static const String columnCategoryId = 'category_id';
+  static const String columnDishId = 'dish_id';
+  static const String columnItemId = 'item_id';
+  static const String columnCount = 'count';
+  static const String columnSortOrder = 'sort_order';
+
   static const String items = 'items';
-  static const String count = 'count';
-  static const String sortOrder = 'sort_order';
 
   DatabaseService._privateConstructor() {
     _init();
@@ -59,9 +60,9 @@ class DatabaseService {
     await db.execute('''
     CREATE TABLE $tableDishes (
       $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
-      $label TEXT UNIQUE NOT NULL,
-      $dishTypeId INTEGER NOT NULL,
-      FOREIGN KEY ($dishTypeId) REFERENCES $tableDishTypes ($columnId)
+      $columnLabel TEXT UNIQUE NOT NULL,
+      $columnDishTypeId INTEGER NOT NULL,
+      FOREIGN KEY ($columnDishTypeId) REFERENCES $tableDishTypes ($columnId)
     )
     ''');
   }
@@ -70,9 +71,9 @@ class DatabaseService {
     await db.execute('''
     CREATE TABLE $tableItems (
       $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
-      $label TEXT UNIQUE NOT NULL,
-      $categoryId INTEGER NOT NULL,
-      FOREIGN KEY ($categoryId) REFERENCES $tableCategories ($columnId)
+      $columnLabel TEXT UNIQUE NOT NULL,
+      $columnCategoryId INTEGER NOT NULL,
+      FOREIGN KEY ($columnCategoryId) REFERENCES $tableCategories ($columnId)
     )
     ''');
   }
@@ -80,12 +81,12 @@ class DatabaseService {
   _createTableDishesItems(Database db) async {
     await db.execute('''
     CREATE TABLE $tableDishesItems (
-      $dishId INTEGER NOT NULL,
-      $itemId INTEGER NOT NULL,
-      $count REAL NOT NULL,
-      FOREIGN KEY ($dishId) REFERENCES $tableDishes ($columnId),
-      FOREIGN KEY ($itemId) REFERENCES $tableItems ($columnId),
-      UNIQUE($dishId, $itemId)
+      $columnDishId INTEGER NOT NULL,
+      $columnItemId INTEGER NOT NULL,
+      $columnCount REAL NOT NULL,
+      FOREIGN KEY ($columnDishId) REFERENCES $tableDishes ($columnId),
+      FOREIGN KEY ($columnItemId) REFERENCES $tableItems ($columnId),
+      UNIQUE($columnDishId, $columnItemId)
     )
     ''');
   }
@@ -94,8 +95,8 @@ class DatabaseService {
     await db.execute('''
     CREATE TABLE $tableCategories (
       $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
-      $categoryLabel TEXT UNIQUE NOT NULL,
-      $sortOrder INTEGER NOT NULL
+      $columnCategoryLabel TEXT UNIQUE NOT NULL,
+      $columnSortOrder INTEGER NOT NULL
     )
     ''');
   }
@@ -104,41 +105,94 @@ class DatabaseService {
     await db.execute('''
     CREATE TABLE $tableDishTypes (
       $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
-      $label TEXT UNIQUE NOT NULL
+      $columnLabel TEXT UNIQUE NOT NULL
     )
     ''');
   }
 
   Future<List<Map<String, Object?>>> getDishLabels() async {
     List<Map<String, Object?>> dishes = await _database.rawQuery('''
-    SELECT $columnId, $label FROM $tableDishes
+    SELECT $columnId, $columnLabel FROM $tableDishes
     ''');
     return dishes;
   }
 
   Future<List<Map<String, Object?>>> getDishIngredients(int dishPrimaryKey) async {
     List<Map<String, Object?>> ingredients = await _database.rawQuery('''
-    SELECT $tableItems.$label, $tableDishesItems.$count, $tableCategories.$categoryLabel FROM $tableItems
-    INNER JOIN $tableDishesItems ON $tableDishesItems.$itemId = $tableItems.$columnId
-    INNER JOIN $tableCategories ON $tableItems.$categoryId = $tableCategories.$columnId
-    WHERE $tableDishesItems.$dishId = ?
+    SELECT $tableItems.$columnLabel, $tableDishesItems.$columnCount, $tableCategories.$columnCategoryLabel FROM $tableItems
+    INNER JOIN $tableDishesItems ON $tableDishesItems.$columnItemId = $tableItems.$columnId
+    INNER JOIN $tableCategories ON $tableItems.$columnCategoryId = $tableCategories.$columnId
+    WHERE $tableDishesItems.$columnDishId = ?
     ''', [dishPrimaryKey]);
     return ingredients;
   }
 
   Future<List<Map<String, Object?>>> getItems() async {
     List<Map<String, Object?>> items = await _database.rawQuery('''
-    SELECT $tableItems.$label, $tableCategories.$categoryLabel FROM $tableItems
-    INNER JOIN $tableCategories ON $tableItems.$categoryId = $tableCategories.$columnId
+    SELECT $tableItems.$columnLabel, $tableCategories.$columnCategoryLabel FROM $tableItems
+    INNER JOIN $tableCategories ON $tableItems.$columnCategoryId = $tableCategories.$columnId
     ''');
     return items;
   }
 
   Future<List<Map<String, Object?>>> getCategories() async {
     List<Map<String, Object?>> categories = await _database.rawQuery('''
-    SELECT $categoryLabel, $sortOrder FROM $tableCategories
+    SELECT $columnCategoryLabel, $columnSortOrder FROM $tableCategories
     ''');
     return categories;
+  }
+
+  Future<int> saveDish(String dishLabel) async {
+    int? id;
+    List<Map<String, Object?>> dish = await _database.rawQuery('''
+    SELECT $columnId FROM $tableDishes WHERE $columnLabel = $dishLabel
+    ''');
+    if (dish.isNotEmpty) {
+      id = dish.first.values.first as int;
+    } else {
+      id = await _database.rawInsert('''
+      INSERT INTO $tableDishes ($columnLabel, $columnDishTypeId) VALUES (?, ?)
+      ''', [dishLabel, 1]);
+    }
+    return id;
+  }
+
+  Future<int> saveItem(String itemLabel, int categoryId) async {
+    int? id;
+    List<Map<String, Object?>> item = await _database.rawQuery('''
+    SELECT $columnId FROM $tableItems WHERE $columnLabel = $itemLabel
+    ''');
+    if (item.isNotEmpty) {
+      id = item.first.values.first as int;
+      await _database.rawUpdate('''
+      UPDATE $tableItems SET $columnCategoryId = ? WHERE $columnLabel = $itemLabel
+      ''');
+    } else {
+      id = await _database.rawInsert('''
+      INSERT INTO $tableItems ($columnId, $columnLabel, $columnCategoryId) VALUES (?, ?, ?)
+      ''', [itemLabel, categoryId]);
+    }
+    return id;
+  }
+
+  Future<int> saveCategory(String categoryLabel, int sortOrder) async {
+    int id = await _database.rawInsert('''
+    INSERT INTO $tableItems ($columnCategoryLabel, $columnSortOrder) VALUES (?, ?)
+    ''', [categoryLabel, sortOrder]);
+    return id;
+  }
+
+  Future<int> saveDishItem(int dishId, int itemId, int count) async {
+    int id = await _database.rawInsert('''
+    INSERT INTO $tableDishesItems ($columnDishId, $columnItemId, $columnCount) VALUES (?, ?, ?)
+    ''', [dishId, itemId, count]);
+    return id;
+  }
+
+  Future<void> saveDishType(String dishTypeLabel) async {
+    await _database.execute('''
+    INSERT OR IGNORE INTO $tableDishTypes ($columnLabel) VALUES (?)
+    ''', [dishTypeLabel]);
   }
 
   isOpen() async {
@@ -154,11 +208,13 @@ class DatabaseService {
     List<dynamic> dishTypes = jsonDecode(await rootBundle.loadString('assets/seed_data/DishTypes.json'));
     List<List<dynamic>> tables = [dishes, items, categories, dishesItems, dishTypes];
 
-    String sqlDishes = "INSERT INTO $tableDishes ($columnId, $label, $dishTypeId) VALUES (?, ?, ?)";
-    String sqlItems = "INSERT INTO $tableItems ($columnId, $label, $categoryId) VALUES (?, ?, ?)";
-    String sqlCategories = "INSERT INTO $tableCategories ($columnId, $categoryLabel, $sortOrder) VALUES (?, ?, ?)";
-    String sqlDishesItems = "INSERT INTO $tableDishesItems ($dishId, $itemId, $count) VALUES (?, ?, ?)";
-    String sqlDishTypes = "INSERT INTO $tableDishTypes ($columnId, $label) VALUES (?, ?)";
+    String sqlDishes = "INSERT INTO $tableDishes ($columnId, $columnLabel, $columnDishTypeId) VALUES (?, ?, ?)";
+    String sqlItems = "INSERT INTO $tableItems ($columnId, $columnLabel, $columnCategoryId) VALUES (?, ?, ?)";
+    String sqlCategories =
+        "INSERT INTO $tableCategories ($columnId, $columnCategoryLabel, $columnSortOrder) VALUES (?, ?, ?)";
+    String sqlDishesItems =
+        "INSERT INTO $tableDishesItems ($columnDishId, $columnItemId, $columnCount) VALUES (?, ?, ?)";
+    String sqlDishTypes = "INSERT INTO $tableDishTypes ($columnId, $columnLabel) VALUES (?, ?)";
     List<String> sqls = [sqlDishes, sqlItems, sqlCategories, sqlDishesItems, sqlDishTypes];
 
     int sqlsIndex = 0;

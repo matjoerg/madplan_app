@@ -15,10 +15,10 @@ class DatabaseRepository {
     List<Dish> dishes = [];
     for (Map<String, Object?> dish in dishLabels) {
       int dishId = dish[DatabaseService.columnId] as int;
-      String dishLabel = dish[DatabaseService.label] as String;
+      String dishLabel = dish[DatabaseService.columnLabel] as String;
       List<Map<String, Object?>> dishIngredients =
           await _databaseService.getDishIngredients(dishId);
-      Map<String, dynamic> dishMap = {DatabaseService.label: dishLabel, DatabaseService.items: dishIngredients};
+      Map<String, dynamic> dishMap = {DatabaseService.columnLabel: dishLabel, DatabaseService.items: dishIngredients};
       dishes.add(Dish.fromMap(dishMap));
     }
 
@@ -35,5 +35,9 @@ class DatabaseRepository {
     List<Map<String, Object?>> categoriesMap = await _databaseService.getCategories();
     List<Category> categories = Category.listFromJson(categoriesMap);
     return categories;
+  }
+
+  Future<void> saveDish(Dish dish) async {
+
   }
 }
