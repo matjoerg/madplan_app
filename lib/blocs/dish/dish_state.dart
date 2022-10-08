@@ -11,6 +11,8 @@ class DishInitial extends DishState {}
 
 class DishLoading extends DishState {}
 
+class DishError extends DishState {}
+
 class DishCreatingNew extends DishState {}
 
 class DishLoaded extends DishState {

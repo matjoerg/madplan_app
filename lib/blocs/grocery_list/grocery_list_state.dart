@@ -7,6 +7,10 @@ abstract class GroceryListState extends Equatable {
   List<Object> get props => [];
 }
 
+class GroceryListLoading extends GroceryListState {}
+
+class GroceryListError extends GroceryListState {}
+
 class GroceryListLoaded extends GroceryListState {
   final GroceryList groceryList;
 

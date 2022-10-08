@@ -21,40 +21,45 @@ class GroceryListBloc extends Bloc<GroceryListEvent, GroceryListState> {
     });
 
     on<GroceryListCreated>((event, emit) {
-      List<Item> allItems = event.mealPlan.getAllItems();
-      Map<String, List<Item>> _itemsByCategory = {};
-      List<Category>? categories = _categories;
+      emit(GroceryListLoading());
+      try {
+        List<Item> allItems = event.mealPlan.getAllItems();
+        Map<String, List<Item>> _itemsByCategory = {};
+        List<Category>? categories = _categories;
 
-      if (categories == null) {
-        _itemsByCategory.addAll({"": allItems});
-      } else {
-        categories.sort((a, b) {
-          int? aSortOrder = a.sortOrder;
-          int? bSortOrder = b.sortOrder;
-          if (aSortOrder == null) {
-            return 1;
-          }
-          if (bSortOrder == null) {
-            return -1;
-          }
-          if (aSortOrder < bSortOrder) {
-            return -1;
-          }
-          return 0;
-        });
-        for (Category category in categories) {
-          List<Item> allItemsInCategory = allItems.where((item) => item.categoryLabel == category.label).toList();
-          if (allItemsInCategory.isNotEmpty) {
-            _itemsByCategory.addAll({category.label: allItemsInCategory});
+        if (categories == null) {
+          _itemsByCategory.addAll({"": allItems});
+        } else {
+          categories.sort((a, b) {
+            int? aSortOrder = a.sortOrder;
+            int? bSortOrder = b.sortOrder;
+            if (aSortOrder == null) {
+              return 1;
+            }
+            if (bSortOrder == null) {
+              return -1;
+            }
+            if (aSortOrder < bSortOrder) {
+              return -1;
+            }
+            return 0;
+          });
+          for (Category category in categories) {
+            List<Item> allItemsInCategory = allItems.where((item) => item.categoryLabel == category.label).toList();
+            if (allItemsInCategory.isNotEmpty) {
+              _itemsByCategory.addAll({category.label: allItemsInCategory});
+            }
           }
         }
-      }
 
-      emit(GroceryListLoaded(
-        groceryList: GroceryList(
-          itemsByCategory: _itemsByCategory,
-        ),
-      ));
+        emit(GroceryListLoaded(
+          groceryList: GroceryList(
+            itemsByCategory: _itemsByCategory,
+          ),
+        ));
+      } catch (e, s) {
+        emit(GroceryListError());
+      }
     });
   }
 
