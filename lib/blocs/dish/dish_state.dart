@@ -15,6 +15,8 @@ class DishError extends DishState {}
 
 class DishCreatingNew extends DishState {}
 
+class DishSavedSuccess extends DishState {}
+
 class DishLoaded extends DishState {
   final Dish chosenDish;
 

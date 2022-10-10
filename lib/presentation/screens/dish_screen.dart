@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:madplan_app/blocs/database/database_bloc.dart';
+import 'package:madplan_app/blocs/dish/dish_bloc.dart';
 import 'package:madplan_app/presentation/components/search_decoration.dart';
 import 'package:madplan_app/presentation/constants/pixels.dart';
 import 'package:madplan_app/data/models/models.dart';
@@ -134,7 +135,7 @@ class _DishScreenState extends State<DishScreen> {
       child: CupertinoButton.filled(
         child: const Text("Gem ret"),
         onPressed: () {
-          //TODO: Save dish
+          BlocProvider.of<DishBloc>(context).add(DishSaved(dish: _chosenDish!));
         },
       ),
     );
@@ -379,7 +380,6 @@ class _DishScreenState extends State<DishScreen> {
   }
 
   Dish? _getDish(String selectedItem) {
-    //TODO: Get dish from database
     if (selectedItem == "Opret ny") {
       return Dish(
         label: "",

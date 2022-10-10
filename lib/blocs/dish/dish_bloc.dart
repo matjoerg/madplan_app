@@ -17,6 +17,7 @@ class DishBloc extends Bloc<DishEvent, DishState> {
       emit(DishLoading());
       try {
         await databaseRepository.saveDish(event.dish);
+        emit(DishSavedSuccess());
       } catch (e, s) {
         emit(DishError());
       }

@@ -145,8 +145,8 @@ class DatabaseService {
   Future<int> saveDish(String dishLabel) async {
     int? id;
     List<Map<String, Object?>> dishes = await _database.rawQuery('''
-    SELECT $columnId FROM $tableDishes WHERE $columnLabel = $dishLabel
-    ''');
+    SELECT $columnId FROM $tableDishes WHERE $columnLabel = ?
+    ''', [dishLabel]);
     if (dishes.isNotEmpty) {
       id = dishes.first.values.first as int;
     } else {
@@ -160,16 +160,16 @@ class DatabaseService {
   Future<int> saveItem(String itemLabel, int categoryId) async {
     int? id;
     List<Map<String, Object?>> items = await _database.rawQuery('''
-    SELECT $columnId FROM $tableItems WHERE $columnLabel = $itemLabel
-    ''');
+    SELECT $columnId FROM $tableItems WHERE $columnLabel = ?
+    ''', [itemLabel]);
     if (items.isNotEmpty) {
       id = items.first.values.first as int;
       await _database.rawUpdate('''
-      UPDATE $tableItems SET $columnCategoryId = ? WHERE $columnLabel = $itemLabel
-      ''');
+      UPDATE $tableItems SET $columnCategoryId = ? WHERE $columnLabel = ?
+      ''', [categoryId, itemLabel]);
     } else {
       id = await _database.rawInsert('''
-      INSERT INTO $tableItems ($columnId, $columnLabel, $columnCategoryId) VALUES (?, ?, ?)
+      INSERT INTO $tableItems ($columnId, $columnLabel, $columnCategoryId) VALUES (?, ?)
       ''', [itemLabel, categoryId]);
     }
     return id;
@@ -178,23 +178,22 @@ class DatabaseService {
   Future<int> saveCategory(String categoryLabel, {int? sortOrder}) async {
     int? id;
     List<Map<String, Object?>> categories = await _database.rawQuery('''
-    SELECT $columnId FROM $tableCategories WHERE $columnLabel = $categoryLabel
-    ''');
+    SELECT $columnId FROM $tableCategories WHERE $columnCategoryLabel = ?
+    ''', [categoryLabel]);
     if (categories.isNotEmpty) {
       id = categories.first.values.first as int;
     } else {
       id = await _database.rawInsert('''
-      INSERT INTO $tableItems ($columnCategoryLabel, $columnSortOrder) VALUES (?, ?)
+      INSERT INTO $tableCategories ($columnCategoryLabel, $columnSortOrder) VALUES (?, ?)
       ''', [categoryLabel, sortOrder]);
     }
     return id;
   }
 
-  Future<int> saveDishItem(int dishId, int itemId, num count) async {
-    int id = await _database.rawInsert('''
-    INSERT INTO $tableDishesItems ($columnDishId, $columnItemId, $columnCount) VALUES (?, ?, ?)
+  Future<void> saveDishItem(int dishId, int itemId, num count) async {
+    await _database.execute('''
+    INSERT OR IGNORE INTO $tableDishesItems ($columnDishId, $columnItemId, $columnCount) VALUES (?, ?, ?)
     ''', [dishId, itemId, count]);
-    return id;
   }
 
   Future<void> saveDishType(String dishTypeLabel) async {
