@@ -9,7 +9,7 @@ class Dish {
 
   factory Dish.fromMap(Map<String, dynamic> map) {
     return Dish(
-      label: map[DatabaseService.label],
+      label: map[DatabaseService.columnLabel],
       ingredients: Item.listFromJson(map[DatabaseService.items]),
     );
   }

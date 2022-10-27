@@ -10,9 +10,9 @@ class Item {
 
   factory Item.fromMap(Map<String, dynamic> map) {
     return Item(
-      label: map[DatabaseService.label],
-      count: map[DatabaseService.count] ?? 1,
-      categoryLabel: map[DatabaseService.categoryLabel],
+      label: map[DatabaseService.columnLabel],
+      count: map[DatabaseService.columnCount] ?? 1,
+      categoryLabel: map[DatabaseService.columnCategoryLabel],
       checked: map['checked'] ?? false,
     );
   }

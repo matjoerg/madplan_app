@@ -7,6 +7,7 @@ import 'package:madplan_app/data/repositories/database_repository.dart';
 import 'package:madplan_app/presentation/screens/home_screen.dart';
 import 'package:madplan_app/data/services/service_locator.dart';
 
+import 'blocs/dish/dish_bloc.dart';
 import 'blocs/grocery_list/grocery_list_bloc.dart';
 
 void main() {
@@ -43,10 +44,16 @@ class MyApp extends StatelessWidget {
 }
 
 final List<BlocProvider> blocProviderList = [
+  BlocProvider<DishBloc>(
+    create: (BuildContext context) => DishBloc(
+      databaseRepository: DatabaseRepository(),
+    ),
+  ),
   BlocProvider<DatabaseBloc>(
     lazy: false,
     create: (BuildContext context) => DatabaseBloc(
       databaseRepository: DatabaseRepository(),
+      dishBloc: BlocProvider.of<DishBloc>(context),
     )..add(DatabaseAppStarted()),
   ),
   BlocProvider<GroceryListBloc>(
