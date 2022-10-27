@@ -296,7 +296,6 @@ class _DishScreenState extends State<DishScreen> {
             Expanded(
               flex: 2,
               child: DropdownSearch<String>(
-                enabled: false,
                 mode: Mode.MENU,
                 showClearButton: false,
                 showSelectedItems: true,
