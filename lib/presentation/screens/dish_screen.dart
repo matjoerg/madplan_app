@@ -278,7 +278,7 @@ class _DishScreenState extends State<DishScreen> {
               child: SizedBox(
                 height: 48,
                 child: TextFormField(
-                  initialValue: ingredient.count.toString(),
+                  controller: TextEditingController(text: ingredient.count.toString()),
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: "Antal",
@@ -296,6 +296,7 @@ class _DishScreenState extends State<DishScreen> {
             Expanded(
               flex: 2,
               child: DropdownSearch<String>(
+                enabled: false,
                 mode: Mode.MENU,
                 showClearButton: false,
                 showSelectedItems: true,
