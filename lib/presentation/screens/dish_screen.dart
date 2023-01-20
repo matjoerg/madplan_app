@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:madplan_app/blocs/database/database_bloc.dart';
 import 'package:madplan_app/blocs/dish/dish_bloc.dart';
+import 'package:madplan_app/blocs/item/item_bloc.dart';
 import 'package:madplan_app/presentation/components/search_decoration.dart';
 import 'package:madplan_app/presentation/constants/pixels.dart';
 import 'package:madplan_app/data/models/models.dart';
@@ -192,7 +193,7 @@ class _DishScreenState extends State<DishScreen> {
             CupertinoDialogAction(
               child: const Text("Gem"),
               onPressed: () {
-                //TODO: Save ingredient to database
+                BlocProvider.of<ItemBloc>(context).add(ItemAdded(ingredient: newIngredient));
                 Navigator.pop(context);
               },
             ),
@@ -209,7 +210,7 @@ class _DishScreenState extends State<DishScreen> {
   }
 
   _addNewCategory() {
-    Item newIngredient = Item(label: "", categoryLabel: "");
+    String? newCategoryLabel;
     return showCupertinoDialog(
       context: context,
       builder: (BuildContext context) {
@@ -219,10 +220,8 @@ class _DishScreenState extends State<DishScreen> {
             padding: const EdgeInsets.only(top: 15),
             child: CupertinoTextField(
               autofocus: true,
-              onChanged: (String? ingredientName) {
-                if (ingredientName != null) {
-                  newIngredient.label = ingredientName;
-                }
+              onChanged: (String? categoryLabel) {
+                  newCategoryLabel = categoryLabel;
               },
               placeholder: "Navn på kategori",
             ),
@@ -231,7 +230,7 @@ class _DishScreenState extends State<DishScreen> {
             CupertinoDialogAction(
               child: const Text("Gem"),
               onPressed: () {
-                //TODO: Save category to database
+                BlocProvider.of<ItemBloc>(context).add(ItemCategoryAdded(categoryName: newCategoryLabel!));
                 Navigator.pop(context);
               },
             ),
