@@ -9,6 +9,7 @@ import 'package:madplan_app/data/services/service_locator.dart';
 
 import 'blocs/dish/dish_bloc.dart';
 import 'blocs/grocery_list/grocery_list_bloc.dart';
+import 'blocs/item/item_bloc.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,11 +50,17 @@ final List<BlocProvider> blocProviderList = [
       databaseRepository: DatabaseRepository(),
     ),
   ),
+  BlocProvider<ItemBloc>(
+    create: (BuildContext context) => ItemBloc(
+      databaseRepository: DatabaseRepository(),
+    ),
+  ),
   BlocProvider<DatabaseBloc>(
     lazy: false,
     create: (BuildContext context) => DatabaseBloc(
       databaseRepository: DatabaseRepository(),
       dishBloc: BlocProvider.of<DishBloc>(context),
+      itemBloc: BlocProvider.of<ItemBloc>(context),
     )..add(DatabaseAppStarted()),
   ),
   BlocProvider<GroceryListBloc>(
