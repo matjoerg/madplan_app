@@ -44,13 +44,4 @@ class DatabaseRepository {
       await _databaseService.saveDishItem(dishId, itemId, ingredient.count);
     }
   }
-
-  Future<void> saveItem(Item item) async {
-    int categoryId = await _databaseService.saveCategory(item.categoryLabel);
-    await _databaseService.saveItem(item.label, categoryId);
-  }
-
-  Future<void> saveCategory(String categoryLabel) async {
-    await _databaseService.saveCategory(categoryLabel);
-  }
 }

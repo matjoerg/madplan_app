@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:madplan_app/blocs/database/database_bloc.dart';
 import 'package:madplan_app/blocs/dish/dish_bloc.dart';
-import 'package:madplan_app/blocs/item/item_bloc.dart';
 import 'package:madplan_app/presentation/components/search_decoration.dart';
 import 'package:madplan_app/presentation/constants/pixels.dart';
 import 'package:madplan_app/data/models/models.dart';
@@ -193,7 +192,7 @@ class _DishScreenState extends State<DishScreen> {
             CupertinoDialogAction(
               child: const Text("Gem"),
               onPressed: () {
-                BlocProvider.of<ItemBloc>(context).add(ItemAdded(ingredient: newIngredient));
+                //TODO: Save ingredient to database
                 Navigator.pop(context);
               },
             ),
@@ -210,7 +209,7 @@ class _DishScreenState extends State<DishScreen> {
   }
 
   _addNewCategory() {
-    String? newCategoryLabel;
+    Item newIngredient = Item(label: "", categoryLabel: "");
     return showCupertinoDialog(
       context: context,
       builder: (BuildContext context) {
@@ -220,8 +219,10 @@ class _DishScreenState extends State<DishScreen> {
             padding: const EdgeInsets.only(top: 15),
             child: CupertinoTextField(
               autofocus: true,
-              onChanged: (String? categoryLabel) {
-                  newCategoryLabel = categoryLabel;
+              onChanged: (String? ingredientName) {
+                if (ingredientName != null) {
+                  newIngredient.label = ingredientName;
+                }
               },
               placeholder: "Navn på kategori",
             ),
@@ -230,7 +231,7 @@ class _DishScreenState extends State<DishScreen> {
             CupertinoDialogAction(
               child: const Text("Gem"),
               onPressed: () {
-                BlocProvider.of<ItemBloc>(context).add(ItemCategoryAdded(categoryName: newCategoryLabel!));
+                //TODO: Save category to database
                 Navigator.pop(context);
               },
             ),
