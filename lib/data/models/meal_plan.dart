@@ -37,9 +37,20 @@ class MealPlan {
   }
 
   List<Item> getAllItems() {
+    //TODO: Refactor method after updating models
     List<Meal> addedMeals = _meals.values.whereNotNull().toList();
     List<Item> allItems = addedMeals.expand((mealList) => mealList.mainDish.ingredients).toList();
-    return allItems;
+    List<Item> allUniqueItems = [];
+    List<String> allUniqueItemsLabels = [];
+    for (Item item in allItems) {
+      if (allUniqueItemsLabels.contains(item.label)) {
+        allUniqueItems.where((uniqueItem) => uniqueItem.label == item.label).first.count += item.count;
+      } else {
+        allUniqueItems.add(item.copy());
+        allUniqueItemsLabels.add(item.label);
+      }
+    }
+    return allUniqueItems;
   }
 
   Meal? get monday => _meals[Weekday.monday];
