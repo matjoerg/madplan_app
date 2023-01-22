@@ -169,7 +169,7 @@ class DatabaseService {
       ''', [categoryId, itemLabel]);
     } else {
       id = await _database.rawInsert('''
-      INSERT INTO $tableItems ($columnLabel, $columnCategoryId) VALUES (?, ?)
+      INSERT INTO $tableItems ($columnId, $columnLabel, $columnCategoryId) VALUES (?, ?)
       ''', [itemLabel, categoryId]);
     }
     return id;
