@@ -29,14 +29,11 @@ class _ListScreenState extends State<ListScreen> {
             padding: const EdgeInsets.all(Pixels.defaultMargin),
             sliver: BlocBuilder<GroceryListBloc, GroceryListState>(
               builder: (context, state) {
-                if (state is GroceryListLoaded) {
                   return SliverList(
                     delegate: SliverChildListDelegate.fixed(
                       _buildGroceryList(state),
                     ),
                   );
-                }
-                return Container();
               },
             ),
           ),
@@ -45,7 +42,7 @@ class _ListScreenState extends State<ListScreen> {
     );
   }
 
-  List<Widget> _buildGroceryList(GroceryListLoaded state) {
+  List<Widget> _buildGroceryList(GroceryListState state) {
     List<Widget> categoryItemsList = [];
     state.groceryList.itemsByCategory.forEach((key, value) {
       categoryItemsList.add(_buildCategoryItemsList(key, value));

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:madplan_app/blocs/database/database_bloc.dart';
 import 'package:madplan_app/data/models/models.dart';
 
@@ -13,7 +14,7 @@ class GroceryListBloc extends Bloc<GroceryListEvent, GroceryListState> {
   late StreamSubscription databaseSubscription;
   List<Category>? _categories;
 
-  GroceryListBloc({required this.databaseBloc}) : super(GroceryListLoaded(groceryList: GroceryList.empty())) {
+  GroceryListBloc({required this.databaseBloc}) : super(GroceryListState(groceryList: GroceryList())) {
     databaseSubscription = databaseBloc.stream.listen((state) {
       if (state is DatabaseLoaded) {
         _categories = state.categories;
@@ -21,12 +22,12 @@ class GroceryListBloc extends Bloc<GroceryListEvent, GroceryListState> {
     });
 
     on<GroceryListCreated>((event, emit) {
-      emit(GroceryListLoading());
       try {
         List<Item> allItems = event.mealPlan.getAllItems();
         Map<String, List<Item>> _itemsByCategory = {};
         List<Category>? categories = _categories;
 
+        //TODO: Move logic to GroceryList and use categories from items
         if (categories == null) {
           _itemsByCategory.addAll({"": allItems});
         } else {
@@ -52,14 +53,18 @@ class GroceryListBloc extends Bloc<GroceryListEvent, GroceryListState> {
           }
         }
 
-        emit(GroceryListLoaded(
-          groceryList: GroceryList(
-            itemsByCategory: _itemsByCategory,
-          ),
-        ));
+
+        emit(state.copyWith(groceryList: GroceryList(initialItems: allItems)));
       } catch (e, s) {
-        emit(GroceryListError());
+        debugPrint("GroceryListBloc error");
+        //TODO: Implement error state
       }
+    });
+
+    on<GroceryListItemAdded>((event, emit) {
+      GroceryList groceryList = state.groceryList;
+      groceryList.addItem(event.item);
+      emit(state.copyWith(groceryList: groceryList));
     });
   }
 
