@@ -1,59 +1,16 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:madplan_app/blocs/database/database_bloc.dart';
 import 'package:madplan_app/data/models/models.dart';
 
 part 'grocery_list_event.dart';
 part 'grocery_list_state.dart';
 
 class GroceryListBloc extends Bloc<GroceryListEvent, GroceryListState> {
-  final DatabaseBloc databaseBloc;
-  late StreamSubscription databaseSubscription;
-  List<Category>? _categories;
-
-  GroceryListBloc({required this.databaseBloc}) : super(GroceryListState(groceryList: GroceryList())) {
-    databaseSubscription = databaseBloc.stream.listen((state) {
-      if (state is DatabaseLoaded) {
-        _categories = state.categories;
-      }
-    });
-
+  GroceryListBloc() : super(GroceryListState(groceryList: GroceryList())) {
     on<GroceryListCreated>((event, emit) {
       try {
-        List<Item> allItems = event.mealPlan.getAllItems();
-        Map<String, List<Item>> _itemsByCategory = {};
-        List<Category>? categories = _categories;
-
-        //TODO: Move logic to GroceryList and use categories from items
-        if (categories == null) {
-          _itemsByCategory.addAll({"": allItems});
-        } else {
-          categories.sort((a, b) {
-            int? aSortOrder = a.sortOrder;
-            int? bSortOrder = b.sortOrder;
-            if (aSortOrder == null) {
-              return 1;
-            }
-            if (bSortOrder == null) {
-              return -1;
-            }
-            if (aSortOrder < bSortOrder) {
-              return -1;
-            }
-            return 0;
-          });
-          for (Category category in categories) {
-            List<Item> allItemsInCategory = allItems.where((item) => item.category.label == category.label).toList();
-            if (allItemsInCategory.isNotEmpty) {
-              _itemsByCategory.addAll({category.label: allItemsInCategory});
-            }
-          }
-        }
-
-        emit(state.copyWith(groceryList: GroceryList(initialItems: allItems)));
+        emit(state.copyWith(groceryList: GroceryList(initialItems: event.mealPlan.getAllItems())));
       } catch (e, s) {
         debugPrint("GroceryListBloc error");
         //TODO: Implement error state
@@ -65,11 +22,5 @@ class GroceryListBloc extends Bloc<GroceryListEvent, GroceryListState> {
       groceryList.addItem(event.item);
       emit(state.copyWith(groceryList: groceryList));
     });
-  }
-
-  @override
-  Future<void> close() {
-    databaseSubscription.cancel();
-    return super.close();
   }
 }

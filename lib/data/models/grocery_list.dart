@@ -7,8 +7,35 @@ class GroceryList {
   GroceryList({List<Item>? initialItems, this.mealPlan}) : itemsByCategory = _mapItemsByCategory(initialItems);
 
   static Map<String, List<Item>> _mapItemsByCategory(List<Item>? items) {
-    //TODO: Implement
-    return {};
+    if (items == null) {
+      return {};
+    }
+    List<Category> categories = items.map((e) => e.category).toList();
+    Map<String, List<Item>> _itemsByCategory = {};
+
+    categories.sort((a, b) {
+      int? aSortOrder = a.sortOrder;
+      int? bSortOrder = b.sortOrder;
+      if (aSortOrder == null) {
+        return 1;
+      }
+      if (bSortOrder == null) {
+        return -1;
+      }
+      if (aSortOrder < bSortOrder) {
+        return -1;
+      }
+      return 0;
+    });
+
+    for (Category category in categories) {
+      List<Item> allItemsInCategory = items.where((item) => item.category.label == category.label).toList();
+      if (allItemsInCategory.isNotEmpty) {
+        _itemsByCategory.addAll({category.label: allItemsInCategory});
+      }
+    }
+
+    return _itemsByCategory;
   }
 
   addItem(Item item) {

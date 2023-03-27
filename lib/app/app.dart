@@ -56,8 +56,6 @@ final List<BlocProvider> blocProviderList = [
     )..add(DatabaseAppStarted()),
   ),
   BlocProvider<GroceryListBloc>(
-    create: (BuildContext context) => GroceryListBloc(
-      databaseBloc: BlocProvider.of<DatabaseBloc>(context),
-    ),
+    create: (BuildContext context) => GroceryListBloc(),
   ),
 ];
