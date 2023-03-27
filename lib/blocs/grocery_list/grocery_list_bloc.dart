@@ -46,13 +46,12 @@ class GroceryListBloc extends Bloc<GroceryListEvent, GroceryListState> {
             return 0;
           });
           for (Category category in categories) {
-            List<Item> allItemsInCategory = allItems.where((item) => item.categoryLabel == category.label).toList();
+            List<Item> allItemsInCategory = allItems.where((item) => item.category.label == category.label).toList();
             if (allItemsInCategory.isNotEmpty) {
               _itemsByCategory.addAll({category.label: allItemsInCategory});
             }
           }
         }
-
 
         emit(state.copyWith(groceryList: GroceryList(initialItems: allItems)));
       } catch (e, s) {

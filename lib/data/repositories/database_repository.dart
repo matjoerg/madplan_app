@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:madplan_app/data/models/models.dart';
 import 'package:madplan_app/data/services/service_locator.dart';
 
@@ -39,14 +38,14 @@ class DatabaseRepository {
   Future<void> saveDish(Dish dish) async {
     int dishId = await _databaseService.saveDish(dish.label);
     for (Item ingredient in dish.ingredients) {
-      int categoryId = await _databaseService.saveCategory(ingredient.categoryLabel);
+      int categoryId = await _databaseService.saveCategory(ingredient.category.label);
       int itemId = await _databaseService.saveItem(ingredient.label, categoryId);
       await _databaseService.saveDishItem(dishId, itemId, ingredient.count);
     }
   }
 
   Future<void> saveItem(Item item) async {
-    int categoryId = await _databaseService.saveCategory(item.categoryLabel);
+    int categoryId = await _databaseService.saveCategory(item.category.label);
     await _databaseService.saveItem(item.label, categoryId);
   }
 

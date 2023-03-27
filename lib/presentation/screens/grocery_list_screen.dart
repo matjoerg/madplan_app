@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:madplan_app/blocs/grocery_list/grocery_list_bloc.dart';
-import 'package:madplan_app/presentation/constants/pixels.dart';
 import 'package:madplan_app/data/models/item.dart';
+import 'package:madplan_app/presentation/constants/pixels.dart';
 
 import 'screens.dart';
 
@@ -17,25 +17,37 @@ class ListScreen extends StatefulWidget {
 class _ListScreenState extends State<ListScreen> {
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: <Widget>[
-        CupertinoSliverNavigationBar(
-          largeTitle: Text(ScreenConstants.list.title),
-        ),
-        SliverSafeArea(
-          top: false,
-          bottom: true,
-          sliver: SliverPadding(
-            padding: const EdgeInsets.all(Pixels.defaultMargin),
-            sliver: BlocBuilder<GroceryListBloc, GroceryListState>(
-              builder: (context, state) {
-                  return SliverList(
-                    delegate: SliverChildListDelegate.fixed(
-                      _buildGroceryList(state),
-                    ),
-                  );
-              },
+    return Stack(
+      children: [
+        CustomScrollView(
+          slivers: <Widget>[
+            CupertinoSliverNavigationBar(
+              largeTitle: Text(ScreenConstants.list.title),
             ),
+            SliverSafeArea(
+              top: false,
+              bottom: true,
+              sliver: SliverPadding(
+                padding: const EdgeInsets.all(Pixels.defaultMargin),
+                sliver: BlocBuilder<GroceryListBloc, GroceryListState>(
+                  builder: (context, state) {
+                    return SliverList(
+                      delegate: SliverChildListDelegate.fixed(
+                        _buildGroceryList(state),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+        const Positioned(
+          right: 40,
+          bottom: 120,
+          child: CircleAvatar(
+            radius: 30,
+            child: Icon(Icons.add, size: 30),
           ),
         ),
       ],

@@ -6,9 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:madplan_app/blocs/database/database_bloc.dart';
 import 'package:madplan_app/blocs/dish/dish_bloc.dart';
 import 'package:madplan_app/blocs/item/item_bloc.dart';
+import 'package:madplan_app/data/models/models.dart';
 import 'package:madplan_app/presentation/components/search_decoration.dart';
 import 'package:madplan_app/presentation/constants/pixels.dart';
-import 'package:madplan_app/data/models/models.dart';
 
 import 'screens.dart';
 
@@ -105,8 +105,8 @@ class _DishScreenState extends State<DishScreen> {
         child: const Icon(CupertinoIcons.add_circled_solid),
         onPressed: () {
           setState(
-                () {
-              _chosenDish?.ingredients.add(Item(label: "", categoryLabel: "", count: 0));
+            () {
+              _chosenDish?.ingredients.add(Item(label: "", category: Category(label: ""), count: 0));
             },
           );
         },
@@ -143,7 +143,7 @@ class _DishScreenState extends State<DishScreen> {
   }
 
   _buildNewIngredientDialog() {
-    Item newIngredient = Item(label: "", categoryLabel: "");
+    Item newIngredient = Item(label: "", category: Category(label: ""));
     return showCupertinoDialog(
       context: context,
       builder: (BuildContext context) {
@@ -182,7 +182,7 @@ class _DishScreenState extends State<DishScreen> {
                     if (selectedItem == null) {
                       return;
                     }
-                    newIngredient.categoryLabel = selectedItem;
+                    newIngredient.category.label = selectedItem;
                   },
                   dropdownBuilder: _customNewIngredientDropdown,
                 ),
@@ -221,7 +221,7 @@ class _DishScreenState extends State<DishScreen> {
             child: CupertinoTextField(
               autofocus: true,
               onChanged: (String? categoryLabel) {
-                  newCategoryLabel = categoryLabel;
+                newCategoryLabel = categoryLabel;
               },
               placeholder: "Navn på kategori",
             ),
@@ -303,7 +303,7 @@ class _DishScreenState extends State<DishScreen> {
                 items: [..._categories.map((e) => e.label).toList()],
                 //dropdownSearchDecoration: InputDecoration(labelText: "Kategori"),
                 label: "Kategori",
-                selectedItem: ingredient.categoryLabel,
+                selectedItem: ingredient.category.label,
                 onChanged: (selectedItem) {
                   _setIngredientCategory(selectedItem, index);
                 },
@@ -383,8 +383,8 @@ class _DishScreenState extends State<DishScreen> {
       return Dish(
         label: "",
         ingredients: [
-          Item(label: "", categoryLabel: "", count: 0),
-          Item(label: "", categoryLabel: "", count: 0),
+          Item(label: "", category: Category(label: ""), count: 0),
+          Item(label: "", category: Category(label: ""), count: 0),
         ],
       );
     } else {
@@ -404,7 +404,7 @@ class _DishScreenState extends State<DishScreen> {
     if (selectedItem == null) {
       return;
     }
-    _chosenDish!.ingredients[index].categoryLabel = selectedItem;
+    _chosenDish!.ingredients[index].category.label = selectedItem;
     print(index.toString() + ": " + selectedItem);
   }
 }
